@@ -25,11 +25,6 @@ jobs:
           echo "APP_ENV=dev" >> projet/.env.local
           echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> projet/.env.local
 
-      - name: Verify database connection
-        run: |
-          sudo apt-get install mysql-client
-          mysql -h ${{ secrets.DB_HOST }} -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e "SHOW DATABASES;"
-
       - name: Install PHP dependencies
         run: |
           cd projet
