@@ -25,6 +25,10 @@ jobs:
           echo "APP_ENV=dev" >> projet/.env.local
           echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> projet/.env.local
 
+      - name: check content folder
+        run: |
+          cd projet
+          ls -l
       - name: Install PHP dependencies
         run: |
           cd projet
