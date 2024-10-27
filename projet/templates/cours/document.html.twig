@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Document index
+{% endblock %}
+
+{% block body %}
+	<section
+		id="faq" class="faq section light-background">
+
+		<!-- Section Title -->
+		<div class="container section-title aos-init aos-animate" data-aos="fade-up">
+			<h2>Frequently Asked Questions</h2>
+			<p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+		</div>
+		<!-- End Section Title -->
+		<div class="container">
+
+			<div class="row justify-content-center">
+
+				<div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+					<div class="faq-container">
+
+						<table id="example" class="display" style="width:100%">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Nom</th>
+									<th>FileName</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for document in articles %}
+									<tr>
+										<td>{{ document.id }}</td>
+										<td>{{ document.nom }}</td>
+										<td>{{ document.fileName }}</td>
+										
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="4">no records found</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+							
+							<tfoot>
+								<tr>
+									<th>Id</th>
+									<th>Nom</th>
+									<th>FileName</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

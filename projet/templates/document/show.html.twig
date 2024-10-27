@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Document
+{% endblock %}
+
+{% block body %}
+
+	<section
+		id="faq" class="faq section light-background">
+
+		<!-- Section Title -->
+		<div class="container section-title aos-init aos-animate" data-aos="fade-up">
+			<h2>Frequently Asked Questions</h2>
+			<p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+		</div>
+		<!-- End Section Title -->
+		<div class="container">
+
+			<div class="row justify-content-center">
+
+				<div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+					<div class="faq-container">
+
+						<table class="display" style="width:100%">
+							<tbody>
+								<tr>
+									<th>Id</th>
+									<td>{{ document.id }}</td>
+								</tr>
+								<tr>
+									<th>Nom</th>
+									<td>{{ document.nom }}</td>
+								</tr>
+								<tr>
+									<th>FileName</th>
+									<td><a href="{{ asset('uploads/documents/' ~ document.fileName) }}">{{ document.fileName }}</a></td>
+								</tr>
+							</tbody>
+						</table>
+
+						{# Formulaire pour ajouter un commentaire #}
+						{{ form_start(form) }}
+						{{ form_row(form.message) }}
+						<button class="btn btn-primary">Ajouter le commentaire</button>
+						{{ form_end(form) }}
+
+						<h2>Commentaires</h2>
+
+						{% if commentaires is not empty %}
+							<ul>
+								{% for commentaire in commentaires %}
+									<li>{{ commentaire.message }}
+										- Publié le
+										{{ commentaire.dateSaisie|date('d/m/Y H:i') }}</li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<p>Aucun commentaire pour le moment.</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{# 	{{ include('document/_delete_form.html.twig') }} #}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Document index
+{% endblock %}
+
+{% block body %}
+	<section
+		id="team" class="team section">
+
+		<!-- Section Title -->
+		<div class="container section-title" data-aos="fade-up">
+			<h2>Cours Video</h2>
+			<p>{# Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit #}</p>
+		</div>
+		<!-- End Section Title -->
+
+		<div class="container">
+
+			<div class="row gy-4">
+				{% for video in videos %}
+
+					<div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+						<div class="team-member">
+							<div class="member-img">
+								<video width="320" height="240" class="img-fluid" controls>
+									<source src="{{ asset('uploads/videos/'~ video.fileName ) }}" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+							</div>
+							<div class="member-info">
+								<h4>{{ video.nom }}</h4>
+								{# 							<span>Chief Executive Officer</span> #}
+							</div>
+						</div>
+					</div>
+
+				{% else %}
+					no records found
+				{% endfor %}
+
+			</div>
+
+		</div>
+
+	</section>
+{% endblock %}

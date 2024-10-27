@@ -1,0 +1,112 @@
+<nav id="navmenu" class="navmenu">
+	<ul>
+		<li class="dropdown">
+			<a href="#">
+				<span>قائمة المهام</span>
+				<i class="bi bi-chevron-down toggle-dropdown"></i>
+			</a>
+			<ul>
+				<li class="dropdown">
+					<a href="#">
+						<span>المهام الجديدة</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						<li><a href="#">المهمة</a></li>
+						<li><a href="#">الموظف أو الفريق</a></li>
+						<li><a href="#">المسؤول عن المهمة</a></li>
+						<li><a href="#">مواعيد إنجاز المهام</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#">
+						<span>مهام قيد التنفيذ</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						<li><a href="#">المهمة</a></li>
+						<li><a href="#">المدة الزمنية</a></li>
+						<li><a href="#">نسبة اإلنجاز</a></li>
+						<li><a href="#">حالة المهمة</a></li>
+						<li><a href="#">قياس أداء الموظفين</a></li>
+						<li><a href="#">تعليقات وتفاعالت</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#">
+						<span>مهام مكتملة</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						<li><a href="#">المهمة</a></li>
+						<li><a href="#">تقييم جودة العمل</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#">
+				<span>إدارة الجتماعات والعمل التعاوني</span>
+				<i class="bi bi-chevron-down toggle-dropdown"></i>
+			</a>
+			<ul>
+				<li><a href="#">نظام جدولةالجتماعات</a></li>
+				<li><a href="#">إشعارات التذكير</a></li>
+				<li><a href="#">مواعيد إنجاز المهام</a></li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#">
+				<span>إدارة الوثائق</span>
+				<i class="bi bi-chevron-down toggle-dropdown"></i>
+			</a>
+			<ul>
+				<li>
+					<a href="#">
+						تسجيل الدخول</a>
+				</li>
+				<li>
+					<a href="{{path('app_document_new') }}">
+						تحميل الوثائق</a>
+				</li>
+				<li class="dropdown">
+					<a href="{{ path('app_document_index') }}">
+						<span>
+							إلطالع على الوثائق</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						{% for category in get_categories() %}
+							<li>
+								<a href="{{ path('app_document_filter',{'category':category.id}) }}">{{ category.nom }}</a>
+							</li>
+						{% endfor %}
+
+					</ul>
+				</li>
+				<li>
+					<a href="#">البحث المتقدم</a>
+				</li>
+				<li>
+					<a href="#">التعليقات والمالحظات</a>
+				</li>
+				<li>
+					<a href="#">حذف</a>
+				</li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#">
+				<span>مركز التدريب والتطوير</span>
+				<i class="bi bi-chevron-down toggle-dropdown"></i>
+			</a>
+			<ul>
+				<li><a href="{{ path('app_cours_document') }}">مقاالت وأوراق بحثية</a></li>
+				<li><a href="{{ path('app_cours_video') }}">دروس فيديو</a></li>
+				<li><a href="{{ path('app_livre') }}">كتب إلكترونية</a></li>
+				<li><a href="{{ path('app_cours_video') }}">منتدى تعليمي</a></li>
+			</ul>
+		</li>
+	</ul>
+	<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+</nav>
