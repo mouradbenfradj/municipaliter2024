@@ -54,8 +54,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: "./projet"
-          server-dir: "/www"
+          local-dir: "./projet/"
+          server-dir: "/www/"
           exclude: |
             .git*
             node_modules/
