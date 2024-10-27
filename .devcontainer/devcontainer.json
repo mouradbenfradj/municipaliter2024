@@ -26,6 +26,23 @@
 		"ghcr.io/cirolosapio/devcontainers-features/alpine-php-composer:0": {
 			"version": "2.7.9"
 		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"mblode.twig-language-2",
+				"serhatkaya.twig-formatter",
+				"zepich.twig-braces-helper",
+				"TheNouillet.symfony-vscode",
+				"duboiss.sf-pack",
+				"n4zim.vscode-symfony",
+				"NDNCI.vscode-symfony-tools",
+				"kkcode.symfony-essential-extension-pack",
+				"SplasHmiCH.symfony-vscode-fixed",
+				"nicodevelopp.nicodevelopp-symfony-pack",
+				"squareface.symfony-starter-pack"
+			]
+		}
 	}
 
 	// Use 'postCreateCommand' to run commands after the container is created.
