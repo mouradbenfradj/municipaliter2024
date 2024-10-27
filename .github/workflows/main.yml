@@ -22,7 +22,7 @@ jobs:
       - name: Create .env.local file
         run: |
           echo "DATABASE_URL=mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}/${{ secrets.DB_NAME }}" > projet/.env.local
-          echo "APP_ENV=prod" >> projet/.env.local
+          echo "APP_ENV=dev" >> projet/.env.local
           echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> projet/.env.local
 
       - name: Install PHP dependencies
@@ -49,18 +49,21 @@ jobs:
           yarn build
 
       - name: Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local_dir: "./projet"
-          server_dir: "/www"
+          local-dir: "./projet"
+          server-dir: "/www"
           exclude: |
             .git*
             node_modules/
             vendor/
-          delete: true
+
+      - name: Run migrations on remote server
+        run: |
+          sshpass -p ${{ secrets.FTP_PASSWORD }} ssh ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} "cd /www && php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration"
 
       - name: Clear cache files on remote server
         run: |
