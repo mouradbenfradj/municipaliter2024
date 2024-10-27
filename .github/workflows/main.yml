@@ -21,18 +21,19 @@ jobs:
 
       - name: Create .env.local file
         run: |
-          echo "DATABASE_URL=mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}/${{ secrets.DB_NAME }}" > projet/.env.local
+          echo "DATABASE_URL=\"mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}/${{ secrets.DB_NAME }}\"" > projet/.env.local
           echo "APP_ENV=dev" >> projet/.env.local
-          echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> projet/.env.local
+          echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> projet/.env.local
 
-      - name: check content folder
+      - name: Verify database connection
         run: |
-          cd projet
-          ls -l
+          sudo apt-get install mysql-client
+          mysql -h ${{ secrets.DB_HOST }} -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e "SHOW DATABASES;"
+
       - name: Install PHP dependencies
         run: |
           cd projet
-          composer install --optimize-autoloader
+          composer install --optimize-autoloader --no-scripts
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
