@@ -22,7 +22,7 @@ jobs:
       - name: Create .env.local file
         run: |
           echo "DATABASE_URL=\"mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}/${{ secrets.DB_NAME }}\"" > projet/.env.local
-          echo "APP_ENV=dev" >> projet/.env.local
+          echo "APP_ENV=prod" >> projet/.env.local
           echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> projet/.env.local
 
       - name: Install PHP dependencies
@@ -70,7 +70,7 @@ jobs:
 
       - name: Trigger migrations
         run: |
-          curl --insecure "https://www.municipaliternumerique.com/public/migrate.php?password=TonMotDePasseUltraSecurise"
+          curl --insecure "https://www.municipaliternumerique.com/migrate.php?password=TonMotDePasseUltraSecurise"
 
       - name: Delete TmpFolder
         uses: StephanThierry/ftp-delete-action@v2.1
