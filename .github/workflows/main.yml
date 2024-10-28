@@ -70,7 +70,7 @@ jobs:
 
       - name: Trigger migrations
         run: |
-          curl "https://www.municipaliternumerique.com/public/migrate.php?password=TonMotDePasseUltraSecurise"
+          curl --insecure "https://www.municipaliternumerique.com/public/migrate.php?password=TonMotDePasseUltraSecurise"
 
       - name: Delete TmpFolder
         uses: StephanThierry/ftp-delete-action@v2.1
