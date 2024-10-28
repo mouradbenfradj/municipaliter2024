@@ -48,11 +48,12 @@ jobs:
           cd projet
           yarn build
 
-      - name: Create necessary directories
+      - name: Create necessary directories via FTP
         run: |
-          lftp -e "mkdir -p /www/var/cache/prod; bye" -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}
+          echo -e "open ${{ secrets.FTP_SERVER }}\nuser ${{ secrets.FTP_USERNAME }} ${{ secrets.FTP_PASSWORD }}\nmkdir /www/var/cache/prod\nbye" > ftp-commands.txt
+          ftp -n < ftp-commands.txt
 
-      - name: Sync files via FTP with verbose logging
+      - name: Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -65,7 +66,6 @@ jobs:
             node_modules/
             vendor/
           always-make-dirs: true
-          log-verbose: true
 
       - name: Trigger migrations
         run: |
