@@ -1,6 +1,6 @@
 name: FTP Deploy
 
-on:
+on: 
   push:
     branches:
       - main
@@ -48,17 +48,11 @@ jobs:
           cd projet
           yarn build
 
-      - name: Delete TmpFolder
-        uses: StephanThierry/ftp-delete-action@v2.1
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          remoteDirectories: "./var/cache/prod"
-          workingDir: "./www/"
-          ignoreSSL: "1"
+      - name: Create necessary directories
+        run: |
+          lftp -e "mkdir -p /www/var/cache/prod; bye" -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}
 
-      - name: Sync files via FTP
+      - name: Sync files via FTP with verbose logging
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -70,7 +64,19 @@ jobs:
             .git*
             node_modules/
             vendor/
+          always-make-dirs: true
+          log-verbose: true
 
       - name: Trigger migrations
         run: |
           curl "https://www.municipaliternumerique.com/public/migrate.php?password=TonMotDePasseUltraSecurise"
+
+      - name: Delete TmpFolder
+        uses: StephanThierry/ftp-delete-action@v2.1
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          remoteDirectories: "./var/cache/prod"
+          workingDir: "./www/"
+          ignoreSSL: "1"
