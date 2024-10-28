@@ -62,10 +62,11 @@ jobs:
           local-dir: "./projet/"
           server-dir: "/www/"
           exclude: |
-            .git*
-            node_modules/
-            vendor/
-          always-make-dirs: true
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.bfg-report*/**
+            **/var/cache/**
 
       - name: Trigger migrations
         run: |
