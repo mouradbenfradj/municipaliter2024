@@ -46,7 +46,7 @@ jobs:
       - name: Build assets with Yarn
         run: |
           cd projet
-          yarn build
+          yarn dev
 
       - name: Create necessary directories via FTP
         run: |
