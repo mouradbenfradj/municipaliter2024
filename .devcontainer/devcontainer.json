@@ -40,7 +40,8 @@
 				"kkcode.symfony-essential-extension-pack",
 				"SplasHmiCH.symfony-vscode-fixed",
 				"nicodevelopp.nicodevelopp-symfony-pack",
-				"squareface.symfony-starter-pack"
+				"squareface.symfony-starter-pack",
+				"github.vscode-github-actions"
 			]
 		}
 	}
