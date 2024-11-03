@@ -43,10 +43,6 @@ jobs:
           cd projet
           yarn install
 
-      - name: assets:install
-        run: |
-          cd projet 
-          php bin/console assets:install --symlink
 
 
       - name: Build assets with Yarn
@@ -59,6 +55,12 @@ jobs:
           echo -e "open ${{ secrets.FTP_SERVER }}\nuser ${{ secrets.FTP_USERNAME }} ${{ secrets.FTP_PASSWORD }}\nmkdir /www/var/cache/prod\nbye" > ftp-commands.txt
           ftp -n < ftp-commands.txt
 
+      - name: assets:install
+        run: |
+          cd projet 
+          php bin/console assets:install --symlink
+
+          
       - name: Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
