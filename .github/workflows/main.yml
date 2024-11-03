@@ -43,6 +43,10 @@ jobs:
           cd projet
           yarn install
 
+      - name: assets:install
+        #if: steps.yarn-cache-node-modules.outputs.cache-hit != 'true'
+        run: php bin/console assets:install --symlink
+
       - name: Build assets with Yarn
         run: |
           cd projet
