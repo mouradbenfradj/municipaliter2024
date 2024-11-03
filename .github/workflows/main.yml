@@ -42,11 +42,24 @@ jobs:
         run: |
           cd projet
           yarn install
+      # Création d'un fichier .env.temp.local temporaire avec une URL de base de données factice
+      - name: Create temporary .env.local without DB connection
+        run: |
+          echo "DATABASE_URL=\"sqlite://:memory:\"" > projet/.env.temp.local
+          echo "APP_ENV=prod" >> projet/.env.temp.local
+          echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> projet/.env.temp.local
 
+      # Exécution de la commande assets:install avec le fichier temporaire pour éviter la connexion DB
       - name: assets:install
         run: |
           cd projet
-          php bin/console assets:install --symlink --no-debug
+          php bin/console assets:install --symlink --no-debug --env-file .env.temp.local
+
+      # Suppression du fichier temporaire et restauration de .env.local pour les étapes suivantes
+      - name: Remove temporary .env.local
+        run: |
+          rm projet/.env.temp.local
+
 
       - name: Build assets with Yarn
         run: |
