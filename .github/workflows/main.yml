@@ -42,7 +42,9 @@ jobs:
         run: |
           cd projet
           yarn install
-
+      - name: Test database host accessibility
+        run: ping -c 4 ${{ secrets.DB_HOST }}
+        
       - name: assets:install
         run: |
           cd projet
