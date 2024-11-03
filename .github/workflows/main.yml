@@ -45,7 +45,6 @@ jobs:
 
       - name: assets:install
         run: |
-          cd projet
           php bin/console assets:install --symlink
 
       - name: Build assets with Yarn
