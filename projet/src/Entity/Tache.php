@@ -38,6 +38,12 @@ class Tache
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $etat = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $eval = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateFin = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +141,30 @@ class Tache
     public function setEtat(?string $etat): static
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getEval(): ?string
+    {
+        return $this->eval;
+    }
+
+    public function setEval(?string $eval): static
+    {
+        $this->eval = $eval;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): static
+    {
+        $this->dateFin = $dateFin;
 
         return $this;
     }
