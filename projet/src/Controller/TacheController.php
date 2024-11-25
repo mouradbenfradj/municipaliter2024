@@ -22,6 +22,33 @@ class TacheController extends AbstractController
         ]);
     }
 
+    #[Route('/nouveau', name: 'app_tache_nouveau', methods: ['GET'])]
+    public function nouveau(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/index.html.twig', [
+            'taches' => $tacheRepository->findByEtat('Nouveau'),
+            'etat' => 0,
+        ]);
+    }
+
+    #[Route('/encour', name: 'app_tache_encour', methods: ['GET'])]
+    public function encour(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/index.html.twig', [
+            'taches' => $tacheRepository->findByEtat('En cours'),
+            'etat' => 1,
+        ]);
+    }
+
+    #[Route('/terminer', name: 'app_tache_terminer', methods: ['GET'])]
+    public function terminer(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/index.html.twig', [
+            'taches' => $tacheRepository->findByEtat('Terminé'),
+            'etat' => 2,
+        ]);
+    }
+
     #[Route('/new', name: 'app_tache_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -71,7 +98,7 @@ class TacheController extends AbstractController
     #[Route('/{id}', name: 'app_tache_delete', methods: ['POST'])]
     public function delete(Request $request, Tache $tache, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tache->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $tache->getId(), $request->request->get('_token'))) {
             $entityManager->remove($tache);
             $entityManager->flush();
         }
