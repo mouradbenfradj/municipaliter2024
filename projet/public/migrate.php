@@ -1,4 +1,5 @@
 <?php
+
 // public/migrate.php
 
 // Mot de passe simple pour sécuriser l'accès
@@ -29,12 +30,25 @@ $kernel->boot();
 $application = new Application($kernel);
 $application->setAutoExit(false);
 
-$input = new ArrayInput([
+// Exécute la commande doctrine:migrations:migrate
+$inputMigrate = new ArrayInput([
     'command' => 'doctrine:migrations:migrate',
     '--no-interaction' => true,
 ]);
-$output = new BufferedOutput();
+$outputMigrate = new BufferedOutput();
 
-$application->run($input, $output);
+$application->run($inputMigrate, $outputMigrate);
 
-echo nl2br($output->fetch());
+echo nl2br($outputMigrate->fetch());
+
+// Exécute la commande doctrine:schema:update
+$inputSchemaUpdate = new ArrayInput([
+    'command' => 'doctrine:schema:update',
+    '--force' => true, // Force l'exécution sans confirmation
+    '--no-interaction' => true, // Pas d'interaction
+]);
+$outputSchemaUpdate = new BufferedOutput();
+
+$application->run($inputSchemaUpdate, $outputSchemaUpdate);
+
+echo nl2br($outputSchemaUpdate->fetch());
