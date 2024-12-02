@@ -42,7 +42,7 @@ class TacheCrudController extends AbstractCrudController
              ChoiceField::new('eval', 'Évaluation')
             ->setChoices([
                 'مراجعة' => 'مراجعة',
-                'متأخرة' => 'متأخرة',
+                'الإنجاز تم بمستوى عالٍ من الجودة' => 'الإنجاز تم بمستوى عالٍ من الجودة',
                 'جاهزة للتسليم' => 'جاهزة للتسليم',
             ])
             ->renderExpanded(false) // Menu déroulant
