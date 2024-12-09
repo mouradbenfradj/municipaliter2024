@@ -1,0 +1,42 @@
+{# templates/reunion/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Réunions{% endblock %}
+
+{% block body %}
+<section id="reunion-list" class="reunion-list section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Liste des Réunions</h2>
+        <p>Voici toutes les réunions programmées.</p>
+        <a href="{{ path('app_reunion_new') }}" class="btn btn-primary">Créer une Nouvelle Réunion</a> {# Lien vers la création de réunion #}
+    </div>
+    <div class="container" data-aos="fade" data-aos-delay="100">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sujet</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Date de fin</th>
+                    <th>Invités</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reunion in reunions %}
+                    <tr>
+                        <td>{{ reunion.sujet }}</td>
+                        <td>{{ reunion.description }}</td>
+                        <td>{{ reunion.date|date('Y-m-d H:i') }}</td>
+                        <td>{{ reunion.datefin|date('Y-m-d H:i') }}</td>
+                        <td>
+                            {% for invite in reunion.invites %}
+                                {{ invite.username }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

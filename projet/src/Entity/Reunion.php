@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReunionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,8 +28,13 @@ class Reunion
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $datefin = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $listeInviter = [];
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'reunions')]
+    private Collection $invites;
+
+    public function __construct()
+    {
+        $this->invites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -82,14 +89,27 @@ class Reunion
         return $this;
     }
 
-    public function getListeInviter(): array
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getInvites(): Collection
     {
-        return $this->listeInviter;
+        return $this->invites;
     }
 
-    public function setListeInviter(array $listeInviter): static
+    public function addInvite(User $invite): static
     {
-        $this->listeInviter = $listeInviter;
+        if (!$this->invites->contains($invite)) {
+            $this->invites->add($invite);
+        }
+
+        return $this;
+    }
+
+    public function removeInvite(User $invite): static
+    {
+        $this->invites->removeElement($invite);
 
         return $this;
     }

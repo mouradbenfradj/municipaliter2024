@@ -1,0 +1,31 @@
+{# templates/reunion/_form.html.twig #}
+{{ form_start(form, {'attr': {'class': 'document-form', 'data-aos': 'fade-up', 'data-aos-delay': '200'}}) }}
+
+<div class="row gy-4">
+    <div class="col-md-6">
+        {{ form_errors(form.sujet) }}
+        {{ form_widget(form.sujet, {'attr': {'class': 'form-control', 'placeholder': 'Sujet'}}) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_errors(form.date) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_errors(form.datefin) }}
+        {{ form_widget(form.datefin, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-12">
+        {{ form_errors(form.description) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+    </div>
+    <div class="col-md-12">
+        {{ form_errors(form.invites) }}
+        {{ form_widget(form.invites, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-12 text-center">
+        <div class="error-message">{{ form_errors(form) }}</div>
+        <button type="submit" class="btn">{{ button_label|default('Créer') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}

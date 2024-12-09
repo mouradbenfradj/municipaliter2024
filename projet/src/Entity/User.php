@@ -37,10 +37,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'user')]
     private Collection $reactions;
 
+    #[ORM\ManyToMany(targetEntity: Reunion::class, mappedBy: 'invites')]
+    private Collection $reunions;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
         $this->reactions = new ArrayCollection();
+        $this->reunions = new ArrayCollection();
     }
 
     public function __toString()
@@ -171,6 +175,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($reaction->getUser() === $this) {
                 $reaction->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reunion>
+     */
+    public function getReunions(): Collection
+    {
+        return $this->reunions;
+    }
+
+    public function addReunion(Reunion $reunion): static
+    {
+        if (!$this->reunions->contains($reunion)) {
+            $this->reunions->add($reunion);
+            $reunion->addInvite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReunion(Reunion $reunion): static
+    {
+        if ($this->reunions->removeElement($reunion)) {
+            $reunion->removeInvite($this);
         }
 
         return $this;

@@ -1,0 +1,24 @@
+{# templates/reunion/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Réunion{% endblock %}
+
+{% block body %}
+<section id="contact" class="contact section">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Créer une nouvelle réunion</h2>
+        <p>Veuillez remplir les informations ci-dessous pour créer une réunion.</p>
+    </div>
+    <!-- End Section Title -->
+    <div class="container" data-aos="fade" data-aos-delay="100">
+        <div class="row gy-4">
+            <div class="col-lg-12">
+                {{ include('reunion/_form.html.twig') }}
+            </div>
+            <!-- End Contact Form -->
+        </div>
+    </div>
+</section>
+<!-- /Contact Section -->
+{% endblock %}
