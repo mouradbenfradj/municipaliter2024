@@ -4,8 +4,7 @@
 	"name": "PHP & MariaDB",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
+    "workspaceFolder": "/workspaces/projet",  // Set to the project folder
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
@@ -41,7 +40,9 @@
 				"SplasHmiCH.symfony-vscode-fixed",
 				"nicodevelopp.nicodevelopp-symfony-pack",
 				"squareface.symfony-starter-pack",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"robberphex.php-debug",
+				"rogeriopradoj.rogeriopradoj-symfony-debug-and-autocomplete"
 			]
 		}
 	}

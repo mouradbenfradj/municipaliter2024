@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Sujets{% endblock %}
+
+{% block body %}
+    <h1>Liste des Sujets</h1>
+    <a href="{{ path('app_topic_new') }}" class="btn btn-primary">Créer un Nouveau Sujet</a>
+    <ul>
+        {% for topic in topics %}
+            <li>
+                <a href="{{ path('app_topic_show', { 'id': topic.id }) }}">{{ topic.title }}</a>
+                <a href="{{ path('app_topic_edit', { 'id': topic.id }) }}" class="btn btn-warning">Modifier</a>
+                <form action="{{ path('app_topic_delete', { 'id': topic.id }) }}" method="post" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ topic.id) }}">
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </li>
+        {% else %}
+            <li>Aucun sujet trouvé.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

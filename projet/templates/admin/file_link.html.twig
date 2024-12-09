@@ -1,0 +1,10 @@
+{# templates/admin/file_link.html.twig #}
+{% extends '@EasyAdmin/crud/field.html.twig' %}
+
+{% block field %}
+    {% if value %}
+        <a href="{{ asset('uploads/article/' ~ value) }}" target="_blank">{{ value }}</a>
+    {% else %}
+        <span>Aucun fichier disponible</span>
+    {% endif %}
+{% endblock %}

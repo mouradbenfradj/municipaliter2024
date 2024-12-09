@@ -3,34 +3,28 @@ version: '3.8'
 services: 
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .  # Contexte de construction, remonte d'un niveau pour accéder au Dockerfile
+      dockerfile: Dockerfile  # Assurez-vous que le Dockerfile est dans le répertoire parent
 
     volumes:
-      - ../..:/workspaces:cached
+      - ../projet:/workspaces/projet  # Mount the project folder into the container
 
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
+    env_file:
+      - ../projet/.env.local  # Charge les variables d'environnement depuis le fichier .env.local
 
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
-
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
+    ports:
+      - "8080:80"  # Redirige le port 80 du conteneur vers le port 8080 de l'hôte
 
   db:
-    image: mariadb:10.4
-    restart: unless-stopped
+    image: mariadb:10.4  
+    restart: unless-stopped  
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - db_data:/var/lib/mysql  
     environment:
-      MYSQL_ROOT_PASSWORD: mariadb
-      MYSQL_DATABASE: mariadb
-      MYSQL_USER: mariadb
-      MYSQL_PASSWORD: mariadb
+      MYSQL_ROOT_PASSWORD: mourad  
+      MYSQL_DATABASE: municipaliter  
+      MYSQL_USER: mourad  
+      MYSQL_PASSWORD: mourad  
 
-    # Add "forwardPorts": ["3306"] to **devcontainer.json** to forward MariaDB locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
-  
 volumes:
-  mariadb-data:
+  db_data:  

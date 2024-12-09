@@ -9,6 +9,7 @@ security:
             memory:
                 users:
                     mourad: { password: '$2y$13$IQmibpwAMXZNfZsnL7lp7u74p8/XnKqxYWjH0z/E2TpdvZYB9m8xS', roles: ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'] }
+                    user: { password: '$2y$13$IQmibpwAMXZNfZsnL7lp7u74p8/XnKqxYWjH0z/E2TpdvZYB9m8xS', roles: ['ROLE_USER'] }
 
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -35,6 +36,7 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+            anonymous: false  # Cela exige que tous les utilisateurs soient authentifiés
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -45,8 +47,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/login, roles: IS_ANONYMOUS }  # Permet l'accès à la page de connexion sans authentification
+        - { path: ^/register, roles: IS_ANONYMOUS }  # Permet l'accès à la page de connexion sans authentification
         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }  # Exige que tous les utilisateurs soient authentifiés pour accéder à toutes les pages
 
 when@test:
     security:

@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,6 +30,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(groups: ['create'])]
     private ?string $plainPassword = null;
+
+    #[ORM\OneToMany(targetEntity: Topic::class, mappedBy: 'user')]
+    private Collection $topics;
+
+    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'user')]
+    private Collection $reactions;
+
+    public function __construct()
+    {
+        $this->topics = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
+    }
 
     // Getters and setters...
 
@@ -96,5 +110,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Topic>
+     */
+    public function getTopics(): Collection
+    {
+        return $this->topics;
+    }
+
+    public function addTopic(Topic $topic): static
+    {
+        if (!$this->topics->contains($topic)) {
+            $this->topics->add($topic);
+            $topic->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopic(Topic $topic): static
+    {
+        if ($this->topics->removeElement($topic)) {
+            // set the owning side to null (unless already changed)
+            if ($topic->getUser() === $this) {
+                $topic->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reaction>
+     */
+    public function getReactions(): Collection
+    {
+        return $this->reactions;
+    }
+
+    public function addReaction(Reaction $reaction): static
+    {
+        if (!$this->reactions->contains($reaction)) {
+            $this->reactions->add($reaction);
+            $reaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReaction(Reaction $reaction): static
+    {
+        if ($this->reactions->removeElement($reaction)) {
+            // set the owning side to null (unless already changed)
+            if ($reaction->getUser() === $this) {
+                $reaction->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

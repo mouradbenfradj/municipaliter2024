@@ -60,11 +60,14 @@
 				<span>إدارة الوثائق</span>
 				<i class="bi bi-chevron-down toggle-dropdown"></i>
 			</a>
-			<ul>
-				<li>
-					<a href="#">
-						تسجيل الدخول</a>
-				</li>
+			<ul>				
+				{% if is_granted('ROLE_ADMIN') %}
+
+					<li>
+						<a href="{{path('admin') }}">
+							admin تسجيل الدخول</a>
+					</li>
+				{% endif %}
 				<li>
 					<a href="{{path('app_document_new') }}">
 						تحميل الوثائق</a>
@@ -104,7 +107,7 @@
 				<li><a href="{{ path('app_cours_document') }}">مقاالت وأوراق بحثية</a></li>
 				<li><a href="{{ path('app_cours_video') }}">دروس فيديو</a></li>
 				<li><a href="{{ path('app_livre') }}">كتب إلكترونية</a></li>
-				<li><a href="{{ path('app_cours_video') }}">منتدى تعليمي</a></li>
+				<li><a href="{{ path('app_topic_index') }}">منتدى تعليمي</a></li>
 			</ul>
 		</li>
 	</ul>

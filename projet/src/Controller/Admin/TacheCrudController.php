@@ -26,20 +26,20 @@ class TacheCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('referance', 'Référence'),
-            TextField::new('titre', 'Titre'),
+            TextField::new('titre', 'المهمة'),
             AssociationField::new('worker', 'Employé'),
             AssociationField::new('workerGroup', 'Groupe'),
-            DateField::new('debut', 'Date de début'),
-            DateField::new('dateFin', 'Date de fin'),
-            IntegerField::new('estimation', 'Estimation (heures)')->setHelp('Durée estimée en heures'),
-            PercentField::new('pourcentage', 'Pourcentage')->setNumDecimals(2)->setStoredAsFractional(false),
-            ChoiceField::new('etat', 'État')
+            DateField::new('debut', 'تاريخ انطلاق المهمة'),
+            DateField::new('dateFin', 'تاريخ الانتهاء الفعلي'),
+            IntegerField::new('estimation', 'مدة إنجاز المهمة')->setHelp('Durée estimée en heures'),
+            PercentField::new('pourcentage', 'نسبة الإنجاز')->setNumDecimals(2)->setStoredAsFractional(false),
+            ChoiceField::new('etat', 'وضع المهمة الحالي')
             ->setChoices([
                 'Nouveau' => 'Nouveau',
                 'En cours' => 'En cours',
                 'Terminé' => 'Terminé',
             ]),
-             ChoiceField::new('eval', 'Évaluation')
+             ChoiceField::new('eval', 'تقييم جودة العمل')
             ->setChoices([
                 'مراجعة' => 'مراجعة',
                 'الإنجاز تم بمستوى عالٍ من الجودة' => 'الإنجاز تم بمستوى عالٍ من الجودة',

@@ -1,68 +1,63 @@
+{# templates/forum/topic.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Document index
-{% endblock %}
+{% block title %}{{ topic.title }}{% endblock %}
 
 {% block body %}
-	<section
-		id="faq" class="faq section light-background">
+<section id="topic" class="topic section light-background">
 
-		<!-- Section Title -->
-		<div class="container section-title aos-init aos-animate" data-aos="fade-up">
-			<h2>{# Frequently Asked Questions #}</h2>
-			<p>{# Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit #}</p>
-		</div>
-		<!-- End Section Title -->
-		<div class="container">
+    <!-- Section Title -->
+    <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2>{{ topic.title }}</h2>
+        <p>{{ topic.description }}</p>
+    </div>
+    <!-- End Section Title -->
 
-			<div class="row justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="discussion-container">
+                    <h3>Discussions</h3>
+                    <table id="discussionTable" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Contenu</th>
+                                <th>Posté le</th>
+                                <th>Auteur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for discussion in discussions %}
+                                <tr>
+                                    <td>{{ discussion.content }}</td>
+                                    <td>{{ discussion.createdAt|date('Y-m-d H:i') }}</td>
+                                    <td>{{ discussion.user.username }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">Aucune discussion trouvée.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Contenu</th>
+                                <th>Posté le</th>
+                                <th>Auteur</th>
+                            </tr>
+                        </tfoot>
+                    </table>
 
-				<div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-
-					<div class="faq-container">
-
-						<table id="example" class="display" style="width:100%">
-							<thead>
-								<tr>
-									<th>Id</th>
-									<th>Nom</th>
-									<th>FileName</th>
-									<th>category</th>
-									<th>actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for document in documents %}
-									<tr>
-										<td>{{ document.id }}</td>
-										<td>{{ document.nom }}</td>
-										<td>{{ document.fileName }}</td>
-										<td>{{ document.category }}</td>
-										<td>
-											<a href="{{ path('app_document_show', {'id': document.id}) }}">show</a>
-											<a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a>
-										</td>
-									</tr>
-								{% else %}
-									<tr>
-										<td colspan="4">no records found</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-							
-							<tfoot>
-								<tr>
-									<th>Id</th>
-									<th>Nom</th>
-									<th>FileName</th>
-									<th>category</th>
-									<th>actions</th>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+                    <h4>Nouvelle Discussion</h4>
+                    <form action="{{ path('forum_new_discussion', { id: topic.id }) }}" method="post">
+                        <div class="form-group">
+                            <textarea name="content" rows="4" class="form-control" required placeholder="Écrivez votre message ici..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter une discussion</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

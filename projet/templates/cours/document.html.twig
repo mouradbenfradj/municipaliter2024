@@ -34,8 +34,13 @@
 									<tr>
 										<td>{{ document.id }}</td>
 										<td>{{ document.nom }}</td>
-										<td>{{ document.fileName }}</td>
-										
+										<td>
+											{% if document.fileName %}
+												<a href="{{ asset('uploads/article/' ~ document.fileName) }}" target="_blank">{{ document.fileName }}</a>
+											{% else %}
+												Aucun fichier disponible
+											{% endif %}
+										</td>
 									</tr>
 								{% else %}
 									<tr>
@@ -43,7 +48,7 @@
 									</tr>
 								{% endfor %}
 							</tbody>
-							
+
 							<tfoot>
 								<tr>
 									<th>Id</th>

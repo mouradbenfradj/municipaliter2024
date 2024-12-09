@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
@@ -23,8 +24,11 @@ class ArticleCrudController extends AbstractCrudController
             Field::new('file', 'Fichier (PDF, DOC, DOCX, XLS, XLSX)')
                 ->setFormType(VichFileType::class)
                 ->setHelp('Veuillez télécharger un fichier valide (PDF, DOC, DOCX, XLS, XLSX).')
-                ->setRequired(true),
-            TextField::new('fileName')
+                ->setRequired(true)
+                ->onlyOnForms(),
+            Field::new('fileName')
+                ->setLabel('Nom du fichier')
+                ->setTemplatePath('admin/file_link.html.twig') // Chemin vers le template
                 ->onlyOnIndex(),
         ];
     }
