@@ -50,7 +50,7 @@
 				<i class="bi bi-chevron-down toggle-dropdown"></i>
 			</a>
 			<ul>
-				<li><a href="#">نظام جدولةالجتماعات</a></li>
+				<li><a href="{{ path('reunion_list', parameters = []) }}">نظام جدولةالجتماعات</a></li>
 				<li><a href="#">إشعارات التذكير</a></li>
 				<li><a href="#">مواعيد إنجاز المهام</a></li>
 			</ul>
@@ -110,6 +110,10 @@
 				<li><a href="{{ path('app_topic_index') }}">منتدى تعليمي</a></li>
 			</ul>
 		</li>
+		
+        <li>
+            <a href="{{ path('app_logout') }}" class="btn btn-danger">تسجيل الخروج</a> {# Lien de déconnexion #}
+        </li>
 	</ul>
 	<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 </nav>
