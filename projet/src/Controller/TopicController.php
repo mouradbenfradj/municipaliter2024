@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Topic; // Assurez-vous d'importer votre entité Topic
 use App\Form\TopicType; // Assurez-vous d'importer votre formulaire TopicType
+use App\Repository\TopicRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,22 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class TopicController extends AbstractController
 {
     #[Route('/topic', name: 'app_topic_index')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(TopicRepository $topicRepository): Response
     {
-        $topics = $entityManager->getRepository(Topic::class)->findAll();
 
         return $this->render('topic/index.html.twig', [
-            'topics' => $topics,
+            'topics' => $topicRepository->findAll(),
         ]);
     }
 
-    #[Route('/topic/{id}', name: 'app_topic_show')]
-    public function show(Topic $topic): Response
-    {
-        return $this->render('topic/show.html.twig', [
-            'topic' => $topic,
-        ]);
-    }
     #[Route('/topic/new', name: 'app_topic_new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -37,6 +31,7 @@ class TopicController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $topic->setCreatedAt(new DateTime());
             $entityManager->persist($topic);
             $entityManager->flush();
 
@@ -47,6 +42,18 @@ class TopicController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    #[Route('/topic/{id}', name: 'app_topic_show')]
+    public function show(Topic $topic): Response
+    {
+        return $this->render('topic/show.html.twig', [
+            'topic' => $topic,
+        ]);
+    }
+
+
+
 
     #[Route('/topic/edit/{id}', name: 'app_topic_edit')]
     public function edit(Request $request, Topic $topic, EntityManagerInterface $entityManager): Response

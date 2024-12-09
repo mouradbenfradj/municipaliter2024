@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Réagir au sujet : {{ topic.title }}</h1>
+
+    {{ form_start(form, {'attr': {'class': 'document-form', 'data-aos': 'fade-up', 'data-aos-delay': '200'}}) }}
+    
+    <div class="row gy-4">
+        <div class="col-md-12">
+            {{ form_errors(form.content) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'Votre réaction', 'rows': '4'}}) }}
+        </div>
+
+        <div class="col-md-12 text-center">
+            <div class="error-message">{{ form_errors(form) }}</div>
+            <button type="submit" class="btn">{{ button_label|default('Soumettre') }}</button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+    <h2>Réactions</h2>
+    <ul>
+        {% for reaction in topic.reactions %}
+            <li>{{ reaction.content }} - {{ reaction.user.username }} le {{ reaction.createdAt|date('d/m/Y H:i') }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

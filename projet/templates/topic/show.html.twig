@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ topic.title }}{% endblock %}
-
 {% block body %}
     <h1>{{ topic.title }}</h1>
-    <p>{{ topic.content|raw }}</p>
-    <p><em>Publié le {{ topic.createdAt|date('d/m/Y H:i') }}</em></p>
-    <a href="{{ path('app_topic_edit', { 'id': topic.id }) }}" class="btn btn-warning">Modifier</a>
-    <form action="{{ path('app_topic_delete', { 'id': topic.id }) }}" method="post" style="display:inline;">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ topic.id) }}">
-        <button type="submit" class="btn btn-danger">Supprimer</button>
-    </form>
-    <a href="{{ path('app_topic_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    <p>{{ topic.content }}</p>
+
+    <h2>Réactions</h2>
+    <ul>
+        {% for reaction in topic.reactions %}
+            <li>{{ reaction.content }} - {{ reaction.user.username }} le {{ reaction.createdAt|date('d/m/Y H:i') }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('app_reaction_new_reaction', { id: topic.id }) }}">Réagir</a>
 {% endblock %}

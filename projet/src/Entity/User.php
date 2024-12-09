@@ -43,6 +43,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reactions = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->username;
+    }
     // Getters and setters...
 
     public function getId(): ?int
