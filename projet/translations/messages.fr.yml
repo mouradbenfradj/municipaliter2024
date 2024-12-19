@@ -5,3 +5,22 @@ Pourcentage: 'نسبة الإنجاز'
 Etat: 'وضع المهمة الحالي'
 Evaluation: 'تقييم جودة العمل'
 Datefin: 'تاريخ الانتهاء الفعلي'
+Referance: 'Referance'
+
+ID: "ID"
+Nom: "اسم"
+link: "رابط"
+FileName: "اسم الملف"
+cours: 
+    video: "دروس فيديو"
+# messages.ar.yml
+entries_per_page: "إدخالات لكل صفحة"
+list_of_topics: "قائمة المواضيع"
+no_topic_found: "لم يتم العثور على أي موضوع"
+create_new_topic: "أنشئ موضوعًا جديدًا"
+# messages.ar.yml
+
+no_file_chosen: "لم يتم اختيار أي ملف"
+choose_file: "اختر ملفًا"
+save: "حفظ"
+no_records_found: "لم يتم العثور على سجلات"

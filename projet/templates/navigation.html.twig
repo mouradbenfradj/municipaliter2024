@@ -4,59 +4,17 @@
 
 		<li class="dropdown">
 			<a href="#">
-				<span>قائمة المهام</span>
+				<span>مركز التدريب والتطوير</span>
 				<i class="bi bi-chevron-down toggle-dropdown"></i>
 			</a>
 			<ul>
-				<li class="dropdown">
-					<a href="#">
-						<span>المهام الجديدة</span>
-						<i class="bi bi-chevron-down toggle-dropdown"></i>
-					</a>
-					<ul>
-						<li><a href="{{ path('app_tache_nouveau', parameters = []) }}">المهمة</a></li>
-						<li><a href="#">الموظف أو الفريق</a></li>
-						<li><a href="#">المسؤول عن المهمة</a></li>
-						<li><a href="#">مواعيد إنجاز المهام</a></li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#">
-						<span>مهام قيد التنفيذ</span>
-						<i class="bi bi-chevron-down toggle-dropdown"></i>
-					</a>
-					<ul>
-						<li><a href="{{ path('app_tache_encour', parameters = []) }}">المهمة</a></li>
-						<li><a href="#">المدة الزمنية</a></li>
-						<li><a href="#">نسبة اإلنجاز</a></li>
-						<li><a href="#">حالة المهمة</a></li>
-						<li><a href="#">قياس أداء الموظفين</a></li>
-						<li><a href="#">تعليقات وتفاعالت</a></li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#">
-						<span>مهام مكتملة</span>
-						<i class="bi bi-chevron-down toggle-dropdown"></i>
-					</a>
-					<ul>
-						<li><a href="{{ path('app_tache_terminer', parameters = []) }}">المهمة</a></li>
-						<li><a href="#">تقييم جودة العمل</a></li>
-					</ul>
-				</li>
+				<li><a href="{{ path('app_cours_document') }}">مقاالت وأوراق بحثية</a></li>
+				<li><a href="{{ path('app_cours_video') }}">دروس فيديو</a></li>
+				<li><a href="{{ path('app_livre') }}">كتب إلكترونية</a></li>
+				<li><a href="{{ path('app_topic_index') }}">منتدى تعليمي</a></li>
 			</ul>
 		</li>
-		<li class="dropdown">
-			<a href="#">
-				<span>إدارة الإجتماعات والعمل التعاوني</span>
-				<i class="bi bi-chevron-down toggle-dropdown"></i>
-			</a>
-			<ul>
-				<li><a href="{{ path('reunion_list', parameters = []) }}">نظام جدولةالجتماعات</a></li>
-				<li><a href="#">إشعارات التذكير</a></li>
-				<li><a href="#">مواعيد إنجاز المهام</a></li>
-			</ul>
-		</li>
+		
 		<li class="dropdown">
 			<a href="#">
 				<span>إدارة الوثائق</span>
@@ -100,16 +58,60 @@
 				</li>
 			</ul>
 		</li>
+		
 		<li class="dropdown">
 			<a href="#">
-				<span>مركز التدريب والتطوير</span>
+				<span>إدارة الإجتماعات والعمل التعاوني</span>
 				<i class="bi bi-chevron-down toggle-dropdown"></i>
 			</a>
 			<ul>
-				<li><a href="{{ path('app_cours_document') }}">مقاالت وأوراق بحثية</a></li>
-				<li><a href="{{ path('app_cours_video') }}">دروس فيديو</a></li>
-				<li><a href="{{ path('app_livre') }}">كتب إلكترونية</a></li>
-				<li><a href="{{ path('app_topic_index') }}">منتدى تعليمي</a></li>
+				<li><a href="{{ path('reunion_list', parameters = []) }}">نظام جدولةالجتماعات</a></li>
+				<li><a href="#">إشعارات التذكير</a></li>
+				<li><a href="#">مواعيد إنجاز المهام</a></li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#">
+				<span>قائمة المهام</span>
+				<i class="bi bi-chevron-down toggle-dropdown"></i>
+			</a>
+			<ul>
+				<li class="dropdown">
+					<a href="#">
+						<span>المهام الجديدة</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						<li><a href="{{ path('app_tache_nouveau', parameters = []) }}">المهمة</a></li>
+						<li><a href="#">الموظف أو الفريق</a></li>
+						<li><a href="#">المسؤول عن المهمة</a></li>
+						<li><a href="#">مواعيد إنجاز المهام</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#">
+						<span>مهام قيد التنفيذ</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						<li><a href="{{ path('app_tache_encour', parameters = []) }}">المهمة</a></li>
+						<li><a href="#">المدة الزمنية</a></li>
+						<li><a href="#">نسبة اإلنجاز</a></li>
+						<li><a href="#">حالة المهمة</a></li>
+						<li><a href="#">قياس أداء الموظفين</a></li>
+						<li><a href="#">تعليقات وتفاعالت</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#">
+						<span>مهام مكتملة</span>
+						<i class="bi bi-chevron-down toggle-dropdown"></i>
+					</a>
+					<ul>
+						<li><a href="{{ path('app_tache_terminer', parameters = []) }}">المهمة</a></li>
+						<li><a href="#">تقييم جودة العمل</a></li>
+					</ul>
+				</li>
 			</ul>
 		</li>
 		

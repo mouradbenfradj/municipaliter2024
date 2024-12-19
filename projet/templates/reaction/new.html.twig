@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Réagir au sujet : {{ topic.title }}</h1>
+    <h1>{{ 'ReactToTopic'|trans }} : {{ topic.title }}</h1>
 
     {{ form_start(form, {'attr': {'class': 'document-form', 'data-aos': 'fade-up', 'data-aos-delay': '200'}}) }}
     
@@ -19,7 +19,7 @@
 
     {{ form_end(form) }}
 
-    <h2>Réactions</h2>
+    <h2>{{ 'Reactions'|trans }}</h2>
     <ul>
         {% for reaction in topic.reactions %}
             <li>{{ reaction.content }} - {{ reaction.user.username }} le {{ reaction.createdAt|date('d/m/Y H:i') }}</li>

@@ -5,7 +5,7 @@ Pourcentage: 'نسبة الإنجاز'
 Etat: 'وضع المهمة الحالي'
 Evaluation: 'تقييم جودة العمل'
 Datefin: 'تاريخ الانتهاء الفعلي'
-Referance: 'Referance'# messages.ar.yml
+Referance: 'Referance'
 
 ID: "ID"
 Nom: "اسم"
@@ -24,3 +24,6 @@ no_file_chosen: "لم يتم اختيار أي ملف"
 choose_file: "اختر ملفًا"
 save: "حفظ"
 no_records_found: "لم يتم العثور على سجلات"
+Reactions: "ردود الأفعال"
+React: "رد"
+ReactToTopic: "الرد على الموضوع"

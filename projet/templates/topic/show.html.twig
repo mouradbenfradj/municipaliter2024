@@ -4,12 +4,12 @@
     <h1>{{ topic.title }}</h1>
     <p>{{ topic.content }}</p>
 
-    <h2>Réactions</h2>
+    <h2>{{ 'Reactions'|trans }}</h2>
     <ul>
         {% for reaction in topic.reactions %}
             <li>{{ reaction.content }} - {{ reaction.user.username }} le {{ reaction.createdAt|date('d/m/Y H:i') }}</li>
         {% endfor %}
     </ul>
 
-    <a href="{{ path('app_reaction_new_reaction', { id: topic.id }) }}">Réagir</a>
+    <a href="{{ path('app_reaction_new_reaction', { id: topic.id }) }}">{{ 'React'|trans }}</a>
 {% endblock %}
