@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Sujets{% endblock %}
+{% block title %}{{ 'list_of_topics'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Liste des Sujets</h1>
-    <a href="{{ path('app_topic_new') }}" class="btn btn-primary">Créer un Nouveau Sujet</a>
+    <h1>{{ 'list_of_topics'|trans }}</h1>
+    <a href="{{ path('app_topic_new') }}" class="btn btn-primary">{{ 'create_new_topic'|trans }}</a>
     <ul>
         {% for topic in topics %}
             <li>
@@ -16,7 +16,7 @@
                 </form>
             </li>
         {% else %}
-            <li>Aucun sujet trouvé.</li>
+            <li>{{ 'no_topic_found'|trans }}.</li>
         {% endfor %}
     </ul>
 {% endblock %}

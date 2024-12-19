@@ -19,6 +19,9 @@ use App\Entity\Document;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Entity\Livre;
+use App\Entity\Reaction;
+use App\Entity\Reunion;
+use App\Entity\Topic;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -71,6 +74,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Article', 'fas fa-list', Article::class);
         yield MenuItem::linkToCrud('Video', 'fas fa-list', Video::class);
         yield MenuItem::linkToCrud('Livre', 'fas fa-list', Livre::class);
+        yield MenuItem::linkToCrud('Reaction', 'fas fa-list', Reaction::class);
+        yield MenuItem::linkToCrud('Reunion', 'fas fa-list', Reunion::class);
+        yield MenuItem::linkToCrud('Topic', 'fas fa-list', Topic::class);
 
         yield MenuItem::section('Users');
         yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Commentaire::class);

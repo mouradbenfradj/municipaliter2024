@@ -1,12 +1,12 @@
 {# templates/reunion/list.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Réunions{% endblock %}
+{% block title %}قائمة الاجتماعات{% endblock %}
 
 {% block body %}
 <section id="reunion-list" class="reunion-list section">
     <div class="container section-title" data-aos="fade-up">
-        <h2>Liste des Réunions</h2>
+        <h2>قائمة الاجتماعات</h2>
         <p>Voici toutes les réunions programmées.</p>
         <a href="{{ path('app_reunion_new') }}" class="btn btn-primary">Créer une Nouvelle Réunion</a> {# Lien vers la création de réunion #}
     </div>
@@ -14,11 +14,11 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Sujet</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>Date de fin</th>
-                    <th>Invités</th>
+                    <th>الموضوع</th>
+                    <th>الوصف</th>
+                    <th>تاريخ البدء</th>
+                    <th>تاريخ الانتهاء</th>
+                    <th>المدعوون للاجتماع</th>
                 </tr>
             </thead>
             <tbody>

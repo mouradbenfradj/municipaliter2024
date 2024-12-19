@@ -24,9 +24,9 @@
 						<table id="example" class="display" style="width:100%">
 							<thead>
 								<tr>
-									<th>Id</th>
-									<th>Nom</th>
-									<th>FileName</th>
+									<th>{{ 'ID'|trans }}</th>
+									<th>{{ 'Nom'|trans }}</th>
+									<th>{{ 'FileName'|trans }}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -44,16 +44,16 @@
 									</tr>
 								{% else %}
 									<tr>
-										<td colspan="4">no records found</td>
+										<td colspan="4">{{ 'no_records_found'|trans }}</td>
 									</tr>
 								{% endfor %}
 							</tbody>
 
 							<tfoot>
 								<tr>
-									<th>Id</th>
-									<th>Nom</th>
-									<th>FileName</th>
+									<th>{{ 'ID'|trans }}</th>
+									<th>{{ 'Nom'|trans }}</th>
+									<th>{{ 'FileName'|trans }}</th>
 								</tr>
 							</tfoot>
 						</table>

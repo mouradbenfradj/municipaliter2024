@@ -8,39 +8,39 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ 'ID'|trans }}</th>
                 <td>{{ tache.id }}</td>
             </tr>
             <tr>
-                <th>Referance</th>
+                <th>{{ 'Referance'|trans }}</th>
                 <td>{{ tache.referance }}</td>
             </tr>
             <tr>
-                <th>Titre</th>
+                <th>{{ 'Titre'|trans }}</th>
                 <td>{{ tache.titre }}</td>
             </tr>
             <tr>
-                <th>Debut</th>
+                <th>{{ 'Debut'|trans }}</th>
                 <td>{{ tache.debut ? tache.debut|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Estimation</th>
+                <th>{{ 'Estimation'|trans }}</th>
                 <td>{{ tache.estimation }}</td>
             </tr>
             <tr>
-                <th>Pourcentage</th>
+                <th>{{ 'Pourcentage'|trans }}</th>
                 <td>{{ tache.pourcentage }}</td>
             </tr>
             <tr>
-                <th>Etat</th>
+                <th>{{ 'Etat'|trans }}</th>
                 <td>{{ tache.etat }}</td>
             </tr>
             <tr>
-                <th>Eval</th>
+                <th>{{ 'Evaluation'|trans }}</th>
                 <td>{{ tache.eval }}</td>
             </tr>
             <tr>
-                <th>DateFin</th>
+                <th>{{ 'Datefin'|trans }}</th>
                 <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
             </tr>
         </tbody>

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un Nouveau Sujet{% endblock %}
+{% block title %}{{ 'create_new_topic'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Créer un Nouveau Sujet</h1>
+    <h1>{{ 'create_new_topic'|trans }}</h1>
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit" class="btn btn-primary">Créer</button>
