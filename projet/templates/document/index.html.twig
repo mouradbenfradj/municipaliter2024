@@ -36,7 +36,7 @@
 										<td>{{ document.nom }}</td>
 										<td>
 										{% if document.fileName %}
-												<a href="{{ asset('uploads/article/' ~ document.fileName) }}" target="_blank">{{ document.fileName }}</a>
+												<a href="{{ asset('uploads/documents/' ~ document.fileName) }}" target="_blank">{{ document.fileName }}</a>
 											{% else %}
 												Aucun fichier disponible
 											{% endif %}										</td>
