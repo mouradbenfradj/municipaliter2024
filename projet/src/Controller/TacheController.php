@@ -39,6 +39,24 @@ class TacheController extends AbstractController
         ]);
     }
 
+    #[Route('/tache/rate', name: 'app_tache_rate', methods: ['POST'])]
+    public function rate(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $id = $request->request->get('id');
+        $rating = $request->request->get('rating');
+
+        $tache = $entityManager->getRepository(Tache::class)->find($id);
+        if ($tache) {
+            $tache->setEval($rating);
+            $entityManager->flush();
+
+            return new Response('Evaluation mise à jour', Response::HTTP_OK);
+        }
+
+        return new Response('Tâche non trouvée', Response::HTTP_NOT_FOUND);
+    }
+
+
     #[Route('/encour', name: 'app_tache_encour', methods: ['GET'])]
     public function encour(TacheRepository $tacheRepository): Response
     {
@@ -52,6 +70,15 @@ class TacheController extends AbstractController
     public function terminer(TacheRepository $tacheRepository): Response
     {
         return $this->render('tache/index.html.twig', [
+            'taches' => $tacheRepository->findByEtat('Terminé'),
+            'etat' => 2,
+        ]);
+    }
+
+    #[Route('/eval', name: 'app_tache_eval', methods: ['GET'])]
+    public function eval(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/eval.html.twig', [
             'taches' => $tacheRepository->findByEtat('Terminé'),
             'etat' => 2,
         ]);

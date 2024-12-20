@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tache index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Include Star Rating CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/star-rating/4.0.6/css/star-rating.min.css">
+{% endblock %}
+
+{% block body %}
+<section id="faq" class="faq section light-background">
+    <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2>{# Frequently Asked Questions #}</h2>
+        <p>{# Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit #}</p>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="faq-container">
+                    <table id="example" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Referance</th>
+                                <th>المهمة </th>
+                                <th>تقييم جودة العمل</th>
+                                <th>تاريخ الانتهاء الفعلي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tache in taches %}
+                                <tr>
+                                    <td>{{ tache.id }}</td>
+                                    <td>{{ tache.referance }}</td>
+                                    <td>{{ tache.titre }}</td>
+                                    <td>
+                                        <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" value="{{ tache.eval|default(0) }}" class="rating-loading">
+                                    </td>
+                                    <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="10">{{ 'no_records_found'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Referance</th>
+                                <th>المهمة </th>
+                                <th>تقييم جودة العمل</th>
+                                <th>تاريخ الانتهاء الفعلي</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Include jQuery and Star Rating JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/star-rating/4.0.6/js/star-rating.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.rating-loading').rating({
+                step: 1,
+                showClear: false,
+                showCaption: false
+            });
+
+            $('.rating-loading').on('rating.change', function(event, value, caption) {
+                var tacheId = $(this).attr('id').split('-')[1];
+                // Envoie la mise à jour de la note au serveur
+                $.ajax({
+                    url: '{{ path("app_tache_rate") }}',
+                    method: 'POST',
+                    data: { id: tacheId, rating: value },
+                    success: function(response) {
+                        console.log('Evaluation mise à jour avec succès');
+                    },
+                    error: function(response) {
+                        console.log('Erreur lors de la mise à jour de l\'évaluation');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
