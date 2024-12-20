@@ -7,13 +7,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use IntlDateFormatter;
 
 class TacheCrudController extends AbstractCrudController
 {
@@ -22,18 +20,6 @@ class TacheCrudController extends AbstractCrudController
         return Tache::class;
     }
 
-    private function formatDate(\DateTimeInterface $date): string
-    {
-        $formatter = new IntlDateFormatter(
-            'en_US', // Utiliser une locale qui utilise des chiffres occidentaux
-            IntlDateFormatter::MEDIUM,
-            IntlDateFormatter::SHORT,
-            null,
-            IntlDateFormatter::GREGORIAN,
-            'yyyy-MM-dd HH:mm:ss'
-        );
-        return $formatter->format($date);
-    }
 
     public function configureFields(string $pageName): iterable
     {
@@ -43,23 +29,8 @@ class TacheCrudController extends AbstractCrudController
             TextField::new('titre', 'المهمة'),
             AssociationField::new('worker', 'Employé'),
             AssociationField::new('workerGroup', 'Groupe'),
-
-            DateTimeField::new('date')
-                ->setLabel('تاريخ انطلاق المهمة')
-                ->setFormTypeOption('input_format', 'yyyy-MM-dd HH:mm:ss')
-                ->setFormTypeOption('widget', 'single_text')
-                ->setFormTypeOption('html5', true)
-                ->formatValue(function ($value) {
-                    return $this->formatDate($value); // Appliquer le formatage personnalisé
-                }),
-            DateTimeField::new('datefin')
-                ->setLabel('تاريخ الانتهاء الفعلي')
-                ->setFormTypeOption('input_format', 'yyyy-MM-dd HH:mm:ss')
-                ->setFormTypeOption('widget', 'single_text')
-                ->setFormTypeOption('html5', true)
-                ->formatValue(function ($value) {
-                    return $this->formatDate($value); // Appliquer le formatage personnalisé
-                }),
+            DateField::new('debut', 'تاريخ انطلاق المهمة'),
+            DateField::new('dateFin', 'تاريخ الانتهاء الفعلي'),
             IntegerField::new('estimation', 'مدة إنجاز المهمة')->setHelp('Durée estimée en heures'),
             PercentField::new('pourcentage', 'نسبة الإنجاز')->setNumDecimals(2)->setStoredAsFractional(false),
             ChoiceField::new('etat', 'وضع المهمة الحالي')
