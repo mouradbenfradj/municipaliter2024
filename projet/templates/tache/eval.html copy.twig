@@ -24,10 +24,6 @@
                                 <th>Id</th>
                                 <th>Referance</th>
                                 <th>المهمة </th>
-                                <th>تاريخ انطلاق المهمة</th>
-                                <th>مدة إنجاز المهمة</th>
-                                <th>نسبة الإنجاز</th>
-                                <th>وضع المهمة الحالي</th>
                                 <th>تقييم جودة العمل</th>
                                 <th>تاريخ الانتهاء الفعلي</th>
                             </tr>
@@ -38,10 +34,6 @@
                                     <td>{{ tache.id }}</td>
                                     <td>{{ tache.referance }}</td>
                                     <td>{{ tache.titre }}</td>
-                                    <td>{{ tache.debut ? tache.debut|date('Y-m-d') : '' }}</td>
-                                    <td>{{ tache.estimation }}</td>
-                                    <td>{{ tache.pourcentage }}</td>
-                                    <td>{{ tache.etat }}</td>
                                     <td>
                                         <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" value="{{ tache.eval|default(0) }}" class="rating-loading">
                                     </td>
@@ -58,10 +50,6 @@
                                 <th>Id</th>
                                 <th>Referance</th>
                                 <th>المهمة </th>
-                                <th>تاريخ انطلاق المهمة</th>
-                                <th>مدة إنجاز المهمة</th>
-                                <th>نسبة الإنجاز</th>
-                                <th>وضع المهمة الحالي</th>
                                 <th>تقييم جودة العمل</th>
                                 <th>تاريخ الانتهاء الفعلي</th>
                             </tr>
@@ -90,7 +78,7 @@
                 var tacheId = $(this).attr('id').split('-')[1];
                 // Envoie la mise à jour de la note au serveur
                 $.ajax({
-                    url: '{{ path("app_tache_vote") }}',
+                    url: '{{ path("app_tache_rate") }}',
                     method: 'POST',
                     data: { id: tacheId, rating: value },
                     success: function(response) {
