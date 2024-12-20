@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tache index
+{% endblock %}
+
+{% block body %}
+	{#     <h1>Tache index</h1>
+			 #}
+	<section
+		id="faq" class="faq section light-background">
+
+		<!-- Section Title -->
+		<div class="container section-title aos-init aos-animate" data-aos="fade-up">
+			<h2>{# Frequently Asked Questions #}</h2>
+			<p>{# Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit #}</p>
+		</div>
+		<!-- End Section Title -->
+		<div class="container">
+
+			<div class="row justify-content-center">
+
+				<div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+					<div class="faq-container">
+
+						<table id="example" class="display" style="width:100%">
+							<thead>
+								<tr>
+
+									<th>Id</th>
+									<th>Referance</th>
+									<th>المهمة
+									</th>
+									<th>مدير الأشغال</th>
+									<th>مجموعة</th>
+									<th>عمال</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for tache in taches %}
+									<tr>
+										<td>{{ tache.id }}</td>
+										<td>{{ tache.referance }}</td>
+										<td>{{ tache.titre }}</td>
+										<td>{{ tache.employer }}</td>
+										<td>{{ tache.group }}</td>
+										<td>
+											<ul>
+												{% for employer in tache.group.employers %}
+													<li>-
+														{{ employer.name }}</li>
+												{% endfor %}
+											</ul>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="10">{{ 'no_records_found'|trans }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Id</th>
+									<th>Referance</th>
+									<th>المهمة
+									</th>
+									<th>مدير الأشغال</th>
+									<th>مجموعة</th>
+									<th>عمال</th>
+								</tr>
+							</tfoot>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{#     <a href="{{ path('app_tache_new') }}">Create new</a>
+			 #}
+{% endblock %}

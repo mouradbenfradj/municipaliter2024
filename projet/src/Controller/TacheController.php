@@ -30,6 +30,14 @@ class TacheController extends AbstractController
             'etat' => 0,
         ]);
     }
+    #[Route('/employer', name: 'app_tache_employer', methods: ['GET'])]
+    public function employer(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/employer.html.twig', [
+            'taches' => $tacheRepository->findByEtat('Nouveau'),
+            'etat' => 0,
+        ]);
+    }
 
     #[Route('/encour', name: 'app_tache_encour', methods: ['GET'])]
     public function encour(TacheRepository $tacheRepository): Response

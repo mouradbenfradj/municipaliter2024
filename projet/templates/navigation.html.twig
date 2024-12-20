@@ -8,7 +8,7 @@
 				<i class="bi bi-chevron-down toggle-dropdown"></i>
 			</a>
 			<ul>
-				<li><a href="{{ path('app_cours_document') }}">مقاالت وأوراق بحثية</a></li>
+				<li><a href="{{ path('app_cours_document') }}">مقالات وأوراق بحثية</a></li>
 				<li><a href="{{ path('app_cours_video') }}">دروس فيديو</a></li>
 				<li><a href="{{ path('app_livre') }}">كتب إلكترونية</a></li>
 				<li><a href="{{ path('app_topic_index') }}">منتدى تعليمي</a></li>
@@ -65,7 +65,7 @@
 				<i class="bi bi-chevron-down toggle-dropdown"></i>
 			</a>
 			<ul>
-				<li><a href="{{ path('reunion_list', parameters = []) }}">نظام جدولةالجتماعات</a></li>
+				<li><a href="{{ path('reunion_list', parameters = []) }}">نظام جدولة الإجتماعيات</a></li>
 				<li><a href="#">إشعارات التذكير</a></li>
 				<li><a href="#">مواعيد إنجاز المهام</a></li>
 			</ul>
@@ -83,7 +83,7 @@
 					</a>
 					<ul>
 						<li><a href="{{ path('app_tache_nouveau', parameters = []) }}">المهمة</a></li>
-						<li><a href="#">الموظف أو الفريق</a></li>
+						<li><a href="{{ path('app_tache_employer', parameters = []) }}">الموظف أو الفريق</a></li>
 						<li><a href="#">المسؤول عن المهمة</a></li>
 						<li><a href="#">مواعيد إنجاز المهام</a></li>
 					</ul>
