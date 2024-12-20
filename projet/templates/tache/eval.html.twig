@@ -30,6 +30,7 @@
                                 <th>وضع المهمة الحالي</th>
                                 <th>تقييم جودة العمل</th>
                                 <th>تاريخ الانتهاء الفعلي</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,9 +44,14 @@
                                     <td>{{ tache.pourcentage }}</td>
                                     <td>{{ tache.etat }}</td>
                                     <td>
-                                        <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" value="{% if tache.eval == 'مراجعة' %}1{% elseif tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}2{% elseif tache.eval == 'جاهزة للتسليم' %}3{% else %}0{% endif %}" class="rating-loading">
+                                        <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" 
+                                               value="{% if tache.eval == 'مراجعة' %}1{% elseif tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}2{% elseif tache.eval == 'جاهزة للتسليم' %}3{% else %}0{% endif %}" 
+                                               class="rating-loading" type="text">
                                     </td>
                                     <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
+                                    <td>
+                                        <button class="vote-button" data-tache-id="{{ tache.id }}">Enregistrer le vote</button>
+                                    </td>
                                 </tr>
                             {% else %}
                                 <tr>
@@ -64,6 +70,7 @@
                                 <th>وضع المهمة الحالي</th>
                                 <th>تقييم جودة العمل</th>
                                 <th>تاريخ الانتهاء الفعلي</th>
+                                <th>Actions</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -83,21 +90,27 @@
             $('.rating-loading').rating({
                 step: 1,
                 showClear: false,
-                showCaption: false
+                showCaption: false,
+                starCaptions: {
+                    1: 'مراجعة',
+                    2: 'الإنجاز تم بمستوى عالٍ من الجودة',
+                    3: 'جاهزة للتسليم'
+                }
             });
 
-            $('.rating-loading').on('rating.change', function(event, value, caption) {
-                var tacheId = $(this).attr('id').split('-')[1];
+            $('.vote-button').on('click', function() {
+                var tacheId = $(this).data('tache-id');
+                var rating = $('#rating-' + tacheId).val();
                 // Envoie la mise à jour de la note au serveur
                 $.ajax({
                     url: '{{ path("app_tache_vote") }}',
                     method: 'POST',
-                    data: { id: tacheId, rating: value },
+                    data: { id: tacheId, rating: rating },
                     success: function(response) {
-                        console.log('Evaluation mise à jour avec succès');
+                        alert('Vote enregistré avec succès');
                     },
                     error: function(response) {
-                        console.log('Erreur lors de la mise à jour de l\'évaluation');
+                        alert('Erreur lors de l\'enregistrement du vote');
                     }
                 });
             });
