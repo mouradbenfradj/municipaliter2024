@@ -46,7 +46,7 @@
 										<td>{{ tache.workerGroup }}</td>
 										<td>
 											<ul>
-												{% for employer in tache.group.employers %}
+												{% for employer in tache.workerGroup.employers %}
 													<li>-
 														{{ employer.name }}</li>
 												{% endfor %}
