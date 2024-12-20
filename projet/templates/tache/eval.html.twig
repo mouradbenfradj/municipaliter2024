@@ -4,8 +4,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <!-- Include Star Rating CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/star-rating/4.0.6/css/star-rating.min.css">
 {% endblock %}
 
 {% block body %}
@@ -44,9 +42,11 @@
                                     <td>{{ tache.pourcentage }}</td>
                                     <td>{{ tache.etat }}</td>
                                     <td>
-                                        <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" 
-                                               value="{% if tache.eval == 'مراجعة' %}1{% elseif tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}2{% elseif tache.eval == 'جاهزة للتسليم' %}3{% else %}0{% endif %}" 
-                                               class="rating-loading" type="text">
+                                        <select id="rating-{{ tache.id }}" name="rating-{{ tache.id }}">
+                                            <option value="1" {% if tache.eval == 'مراجعة' %}selected{% endif %}>مراجعة</option>
+                                            <option value="2" {% if tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}selected{% endif %}>الإنجاز تم بمستوى عالٍ من الجودة</option>
+                                            <option value="3" {% if tache.eval == 'جاهزة للتسليم' %}selected{% endif %}>جاهزة للتسليم</option>
+                                        </select>
                                     </td>
                                     <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
                                     <td>
@@ -83,21 +83,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <!-- Include jQuery and Star Rating JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/star-rating/4.0.6/js/star-rating.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('.rating-loading').rating({
-                step: 1,
-                showClear: false,
-                showCaption: false,
-                starCaptions: {
-                    1: 'مراجعة',
-                    2: 'الإنجاز تم بمستوى عالٍ من الجودة',
-                    3: 'جاهزة للتسليم'
-                }
-            });
-
             $('.vote-button').on('click', function() {
                 var tacheId = $(this).data('tache-id');
                 var rating = $('#rating-' + tacheId).val();

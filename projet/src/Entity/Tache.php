@@ -43,7 +43,12 @@ class Tache
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateFin = null;
-
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $votesOneStar = 0;
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $votesTwoStars = 0;
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $votesThreeStars = 0;
     public function getId(): ?int
     {
         return $this->id;
@@ -166,6 +171,33 @@ class Tache
     {
         $this->dateFin = $dateFin;
 
+        return $this;
+    }
+    public function getVotesOneStar(): int
+    {
+        return $this->votesOneStar;
+    }
+    public function setVotesOneStar(int $votesOneStar): static
+    {
+        $this->votesOneStar = $votesOneStar;
+        return $this;
+    }
+    public function getVotesTwoStars(): int
+    {
+        return $this->votesTwoStars;
+    }
+    public function setVotesTwoStars(int $votesTwoStars): static
+    {
+        $this->votesTwoStars = $votesTwoStars;
+        return $this;
+    }
+    public function getVotesThreeStars(): int
+    {
+        return $this->votesThreeStars;
+    }
+    public function setVotesThreeStars(int $votesThreeStars): static
+    {
+        $this->votesThreeStars = $votesThreeStars;
         return $this;
     }
 }
