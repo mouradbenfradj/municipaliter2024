@@ -38,7 +38,7 @@ class ReunionCrudController extends AbstractCrudController
             TextField::new('sujet')->setLabel('Sujet'),
             TextEditorField::new('description')->setLabel('Description'),
             DateTimeField::new('date')
-                ->setLabel('Date de Début')
+                ->setLabel('تاريخ انطلاق')
                 ->setFormTypeOption('input_format', 'yyyy-MM-dd HH:mm:ss')
                 ->setFormTypeOption('widget', 'single_text')
                 ->setFormTypeOption('html5', true)
@@ -46,7 +46,7 @@ class ReunionCrudController extends AbstractCrudController
                     return $this->formatDate($value); // Appliquer le formatage personnalisé
                 }),
             DateTimeField::new('datefin')
-                ->setLabel('Date de Fin')
+                ->setLabel('تاريخ الانتهاء الفعلي')
                 ->setFormTypeOption('input_format', 'yyyy-MM-dd HH:mm:ss')
                 ->setFormTypeOption('widget', 'single_text')
                 ->setFormTypeOption('html5', true)
