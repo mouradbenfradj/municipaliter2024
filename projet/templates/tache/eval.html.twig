@@ -23,7 +23,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Referance</th>
-                                <th>المهمة </th>
+                                <th>المهمة</th>
                                 <th>تاريخ انطلاق المهمة</th>
                                 <th>مدة إنجاز المهمة</th>
                                 <th>نسبة الإنجاز</th>
@@ -43,7 +43,7 @@
                                     <td>{{ tache.pourcentage }}</td>
                                     <td>{{ tache.etat }}</td>
                                     <td>
-                                        <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" value="{{ tache.eval|default(0) }}" class="rating-loading">
+                                        <input id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" value="{% if tache.eval == 'مراجعة' %}1{% elseif tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}2{% elseif tache.eval == 'جاهزة للتسليم' %}3{% else %}0{% endif %}" class="rating-loading">
                                     </td>
                                     <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
                                 </tr>
@@ -57,7 +57,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Referance</th>
-                                <th>المهمة </th>
+                                <th>المهمة</th>
                                 <th>تاريخ انطلاق المهمة</th>
                                 <th>مدة إنجاز المهمة</th>
                                 <th>نسبة الإنجاز</th>
