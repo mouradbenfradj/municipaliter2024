@@ -85,18 +85,26 @@
     {{ parent() }}
     <script>
         $(document).ready(function(){
+            console.log("Page ready");
+
             $('.vote-button').on('click', function() {
                 var tacheId = $(this).data('tache-id');
                 var rating = $('#rating-' + tacheId).val();
+
+                console.log("Tâche ID:", tacheId);
+                console.log("Rating:", rating);
+
                 // Envoie la mise à jour de la note au serveur
                 $.ajax({
                     url: '{{ path("app_tache_vote") }}',
                     method: 'POST',
                     data: { id: tacheId, rating: rating },
                     success: function(response) {
+                        console.log('Response:', response);
                         alert('Vote enregistré avec succès');
                     },
                     error: function(response) {
+                        console.log('Error:', response);
                         alert('Erreur lors de l\'enregistrement du vote');
                     }
                 });
