@@ -28,7 +28,7 @@ class Topic
     #[ORM\ManyToOne(inversedBy: 'topics')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'topic')]
+    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'topic', cascade: ['remove'])]
     private Collection $reactions;
 
     public function __construct()

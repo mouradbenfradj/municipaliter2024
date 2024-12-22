@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Tache;
+use App\Entity\TacheVote;
 use App\Form\TacheType;
 use App\Repository\TacheRepository;
+use App\Repository\TacheVoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +27,7 @@ class TacheController extends AbstractController
     #[Route('/nouveau', name: 'app_tache_nouveau', methods: ['GET'])]
     public function nouveau(TacheRepository $tacheRepository): Response
     {
-        return $this->render('tache/index.html.twig', [
+        return $this->render('tache/nouveaux.html.twig', [
             'taches' => $tacheRepository->findByEtat('Nouveau'),
             'etat' => 0,
         ]);

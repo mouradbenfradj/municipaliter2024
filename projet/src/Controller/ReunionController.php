@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Reunion;
 use App\Form\ReunionType;
 use App\Repository\ReunionRepository;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ class ReunionController extends AbstractController
     }
 
     #[Route('/new', name: 'app_reunion_new')]
-    public function new(Request $request)
+    public function new(Request $request, MailService $mailService)
     {
         $reunion = new Reunion();
         $form = $this->createForm(ReunionType::class, $reunion);
@@ -33,7 +34,10 @@ class ReunionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reunion);
             $entityManager->flush();
-
+            foreach ($reunion->getInvites() as $invite) {
+                $emailContent = $this->renderView('emails/reunion_email.html.twig', ['sujet' => $reunion->getSujet(), 'description' => $reunion->getDescription(), 'date' => $reunion->getDate(), 'datefin' => $reunion->getDatefin()]);
+                $mailService->sendEmail($invite->getEmail(), 'Invitation à la réunion', $emailContent);
+            }
             return $this->redirectToRoute('reunion_list');
         }
 

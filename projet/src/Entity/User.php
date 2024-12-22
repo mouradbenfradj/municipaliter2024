@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -21,6 +22,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
+
+    #[ORM\Column(length: 180, unique: true, nullable: true)]
+    private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -68,7 +72,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->username = $username;
         return $this;
     }
-
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
     public function getUserIdentifier(): string
     {
         return (string) $this->username;

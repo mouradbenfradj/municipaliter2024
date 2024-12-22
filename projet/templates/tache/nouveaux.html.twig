@@ -32,10 +32,7 @@
 									<th>المهمة </th>
 									<th>تاريخ انطلاق المهمة</th>
 									<th>مدة إنجاز المهمة</th>
-									<th> نسبة الإنجاز</th>
-									<th>وضع المهمة الحالي</th>
-									<th>تقييم جودة العمل</th>
-									<th>تاريخ الانتهاء الفعلي</th>
+									<th>تاريخ إنتهاء المهمة</th>
 									{#                 <th>actions</th>
 									 #}
 								</tr>
@@ -48,9 +45,6 @@
 										<td>{{ tache.titre }}</td>
 										<td>{{ tache.debut ? tache.debut|date('Y-m-d') : '' }}</td>
 										<td>{{ tache.estimation }}</td>
-										<td>{{ tache.pourcentage }}</td>
-										<td>{{ tache.etat }}</td>
-										<td>{{ tache.eval }}</td>
 										<td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
 										{#  <td>
 										                    <a href="{{ path('app_tache_show', {'id': tache.id}) }}">show</a>
@@ -70,12 +64,7 @@
 									<th>المهمة </th>
 									<th>تاريخ انطلاق المهمة</th>
 									<th>مدة إنجاز المهمة</th>
-
-									<th> نسبة الإنجاز</th>
-									<th>وضع المهمة الحالي</th>
-									<th>تقييم جودة العمل</th>
-									
-									<th>تاريخ الانتهاء الفعلي</th>
+									<th>تاريخ إنتهاء المهمة</th>
 									{#                 <th>actions</th>
 									 #}
 								</tr>
