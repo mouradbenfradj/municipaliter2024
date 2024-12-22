@@ -1,46 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}تسجيل الدخول{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .login-form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .login-form h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #0066cc;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #0066cc;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #005bb5;
+        }
+        .alert {
+            margin-bottom: 20px;
+            color: white;
+            background-color: #d9534f;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <form method="post">
+    <div class="login-form">
+        <h1 class="h3 mb-3 font-weight-normal">يرجى تسجيل الدخول</h1>
+        
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                لقد سجلت الدخول كـ {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">تسجيل الخروج</a>
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Username</label>
-        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
-
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Remember me
-                </label>
+        <form method="post">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
             </div>
-        #}
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+            </div>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
 
-        <button class="btn btn-lg btn-primary" type="submit">
-           تسجيل الدخول
-        </button>
-        
-    </form>
-        <a href="{{ path('app_register') }}" class="btn btn-lg btn-primary" type="submit">
+            <button class="btn btn-lg btn-primary" type="submit">تسجيل الدخول</button>
+        </form>
+        <a href="{{ path('app_register') }}" class="btn btn-lg btn-primary" type="button">
            تسجيل
         </a>
+    </div>
 {% endblock %}
