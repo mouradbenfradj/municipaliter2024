@@ -77,33 +77,33 @@ class TacheController extends AbstractController
         ]);
     }
     #[Route('/tache/vote', name: 'app_tache_vote', methods: ['POST'])]
-    public function vote(Request $request, EntityManagerInterface $entityManager, TacheVoteRepository $tacheVoteRepository): Response
+    public function vote(Request $request, EntityManagerInterface $entityManager, TacheVoteRepository $tacheVoteRepository): JsonResponse
     {
         $id = $request->request->get('id');
         $rating = (int) $request->request->get('rating');
         $user = $this->getUser();
-
+    
         $tache = $entityManager->getRepository(Tache::class)->find($id);
-
+    
         if (!$tache) {
-            return new Response('Tâche non trouvée', Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['status' => 'error', 'message' => 'Tâche non trouvée'], Response::HTTP_NOT_FOUND);
         }
-
+    
         // Vérifier si l'utilisateur a déjà voté
         $existingVote = $tacheVoteRepository->findOneBy(['tache' => $tache, 'user' => $user]);
-
+    
         if ($existingVote) {
-            return new Response('Vous avez déjà voté pour cette tâche', Response::HTTP_FORBIDDEN);
+            return new JsonResponse(['status' => 'error', 'message' => 'Vous avez déjà voté pour cette tâche'], Response::HTTP_FORBIDDEN);
         }
-
+    
         // Enregistrer le vote de l'utilisateur
         $vote = new TacheVote();
         $vote->setTache($tache);
         $vote->setUser($user);
         $vote->setRating($rating);
-
+    
         $entityManager->persist($vote);
-
+    
         // Mettre à jour les votes dans l'entité Tache
         if ($rating === 1) {
             $tache->setVotesOneStar($tache->getVotesOneStar() + 1);
@@ -112,15 +112,16 @@ class TacheController extends AbstractController
         } else {
             $tache->setVotesThreeStars($tache->getVotesThreeStars() + 1);
         }
-
+    
         // Calculer l'évaluation finale
         $eval = $this->calculateEval($tache);
         $tache->setEval($eval);
-
+    
         $entityManager->flush();
-
-        return new Response('Evaluation mise à jour', Response::HTTP_OK);
+    
+        return new JsonResponse(['status' => 'success', 'message' => 'Vote enregistré avec succès']);
     }
+    
 
     private function calculateEval(Tache $tache): string
     {
