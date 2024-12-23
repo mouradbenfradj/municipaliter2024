@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tache index{% endblock %}
+{% block title %}قائمة المهام{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -9,8 +9,8 @@
 {% block body %}
 <section id="faq" class="faq section light-background">
     <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-        <h2>{# Frequently Asked Questions #}</h2>
-        <p>{# Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit #}</p>
+        <h2></h2>
+        <p></p>
     </div>
     <div class="container">
         <div class="row justify-content-center">
@@ -19,8 +19,8 @@
                     <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Referance</th>
+                                <th>المعرف</th>
+                                <th>المرجع</th>
                                 <th>المهمة</th>
                                 <th>تاريخ انطلاق المهمة</th>
                                 <th>مدة إنجاز المهمة</th>
@@ -28,7 +28,7 @@
                                 <th>وضع المهمة الحالي</th>
                                 <th>تقييم جودة العمل</th>
                                 <th>تاريخ الانتهاء الفعلي</th>
-                                <th>Actions</th>
+                                <th>الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,19 +50,19 @@
                                     </td>
                                     <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
                                     <td>
-                                        <button class="vote-button" data-tache-id="{{ tache.id }}">Enregistrer le vote</button>
+                                        <button class="vote-button" data-tache-id="{{ tache.id }}">تسجيل التصويت</button>
                                     </td>
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="10">{{ 'no_records_found'|trans }}</td>
+                                    <td colspan="10">لم يتم العثور على سجلات</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Id</th>
-                                <th>Referance</th>
+                                <th>المعرف</th>
+                                <th>المرجع</th>
                                 <th>المهمة</th>
                                 <th>تاريخ انطلاق المهمة</th>
                                 <th>مدة إنجاز المهمة</th>
@@ -70,7 +70,7 @@
                                 <th>وضع المهمة الحالي</th>
                                 <th>تقييم جودة العمل</th>
                                 <th>تاريخ الانتهاء الفعلي</th>
-                                <th>Actions</th>
+                                <th>الإجراءات</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -85,27 +85,27 @@
     {{ parent() }}
     <script>
         $(document).ready(function(){
-            console.log("Page ready");
+            console.log("الصفحة جاهزة");
 
             $('.vote-button').on('click', function() {
                 var tacheId = $(this).data('tache-id');
                 var rating = $('#rating-' + tacheId).val();
 
-                console.log("Tâche ID:", tacheId);
-                console.log("Rating:", rating);
+                console.log("معرف المهمة:", tacheId);
+                console.log("التقييم:", rating);
 
-                // Envoie la mise à jour de la note au serveur
+                // إرسال تحديث التقييم إلى الخادم
                 $.ajax({
                     url: '{{ path("app_tache_vote") }}',
                     method: 'POST',
                     data: { id: tacheId, rating: rating },
                     success: function(response) {
-                        console.log('Response:', response);
-                        alert('Vote enregistré avec succès');
+                        console.log('الاستجابة:', response);
+                        alert('تم تسجيل التصويت بنجاح');
                     },
                     error: function(response) {
-                        console.log('Error:', response);
-                        alert('Erreur lors de l\'enregistrement du vote');
+                        console.log('خطأ:', response);
+                        alert('حدث خطأ أثناء تسجيل التصويت');
                     }
                 });
             });

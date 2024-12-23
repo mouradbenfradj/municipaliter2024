@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>Invitation à la Réunion</title>
+    <title>دعوة إلى الاجتماع</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,21 +37,21 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>Invitation à la Réunion</h1>
+            <h1>دعوة إلى الاجتماع</h1>
         </div>
         <div class="content">
-            <p>Bonjour,</p>
-            <p>Vous êtes cordialement invité(e) à participer à une réunion organisée par notre équipe. Voici les détails de la réunion :</p>
-            <p><strong>Sujet :</strong> {{ sujet }}</p>
-            <p><strong>Description :</strong> {{ description }}</p>
-            <p><strong>Date de début :</strong> {{ date|date('d-m-Y H:i') }}</p>
-            <p><strong>Date de fin :</strong> {{ datefin|date('d-m-Y H:i') }}</p>
-            <p>Nous comptons sur votre présence et votre participation active.</p>
-            <p>Cordialement,</p>
-            <p>L'équipe d'organisation</p>
+            <p>مرحبًا،</p>
+            <p>يُسعدنا دعوتكم للمشاركة في اجتماع تنظمه فريقنا. إليكم تفاصيل الاجتماع:</p>
+            <p><strong>الموضوع:</strong> {{ sujet }}</p>
+            <p><strong>الوصف:</strong> {{ description }}</p>
+            <p><strong>تاريخ البدء:</strong> {{ date|date('d-m-Y H:i') }}</p>
+            <p><strong>تاريخ الانتهاء:</strong> {{ datefin|date('d-m-Y H:i') }}</p>
+            <p>نتطلع إلى حضوركم ومشاركتكم الفعالة.</p>
+            <p>مع تحيات،</p>
+            <p>فريق التنظيم</p>
         </div>
         <div class="footer">
-            <p>&copy; {{ "now"|date("Y") }} Municipalité Numérique. Tous droits réservés.</p>
+            <p>&copy; {{ "now"|date("Y") }} منصة المستقبل. جميع الحقوق محفوظة.</p>
         </div>
     </div>
 </body>
