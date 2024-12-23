@@ -27,6 +27,9 @@ class Employer
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'worker')]
     private Collection $taches;
 
+    #[ORM\Column(length: 255, nullable: true)] private ?string
+        $eval = null;
+
     public function __construct()
     {
         $this->taches = new ArrayCollection();
@@ -105,6 +108,15 @@ class Employer
             }
         }
 
+        return $this;
+    }
+    public function getEval(): ?string
+    {
+        return $this->eval;
+    }
+    public function setEval(?string $eval): static
+    {
+        $this->eval = $eval;
         return $this;
     }
 }
