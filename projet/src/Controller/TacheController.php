@@ -18,12 +18,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class TacheController extends AbstractController
 {
     #[Route('/', name: 'app_tache_index', methods: ['GET'])]
-    public function index(TacheRepository $tacheRepository): Response
-    {
-        return $this->render('tache/index.html.twig', [
-            'taches' => $tacheRepository->findAll(),
-        ]);
+public function index(TacheRepository $tacheRepository, TacheVoteRepository $tacheVoteRepository): Response
+{
+    $taches = $tacheRepository->findAll();
+    $userVotes = [];
+
+    $user = $this->getUser();
+    if ($user) {
+        foreach ($taches as $tache) {
+            $vote = $tacheVoteRepository->findOneBy(['tache' => $tache, 'user' => $user]);
+            if ($vote) {
+                $userVotes[$tache->getId()] = true;
+            } else {
+                $userVotes[$tache->getId()] = false;
+            }
+        }
     }
+
+    return $this->render('tache/index.html.twig', [
+        'taches' => $taches,
+        'userVotes' => $userVotes,
+    ]);
+}
+
 
     #[Route('/nouveau', name: 'app_tache_nouveau', methods: ['GET'])]
     public function nouveau(TacheRepository $tacheRepository): Response
