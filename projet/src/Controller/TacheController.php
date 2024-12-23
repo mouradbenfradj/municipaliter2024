@@ -18,29 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class TacheController extends AbstractController
 {
     #[Route('/', name: 'app_tache_index', methods: ['GET'])]
-public function index(TacheRepository $tacheRepository, TacheVoteRepository $tacheVoteRepository): Response
-{
-    $taches = $tacheRepository->findAll();
-    $userVotes = [];
-
-    $user = $this->getUser();
-    if ($user) {
-        foreach ($taches as $tache) {
-            $vote = $tacheVoteRepository->findOneBy(['tache' => $tache, 'user' => $user]);
-            if ($vote) {
-                $userVotes[$tache->getId()] = true;
-            } else {
-                $userVotes[$tache->getId()] = false;
-            }
-        }
+    public function index(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/index.html.twig', [
+            'taches' => $tacheRepository->findAll(),
+        ]);
     }
-
-    return $this->render('tache/index.html.twig', [
-        'taches' => $taches,
-        'userVotes' => $userVotes,
-    ]);
-}
-
 
     #[Route('/nouveau', name: 'app_tache_nouveau', methods: ['GET'])]
     public function nouveau(TacheRepository $tacheRepository): Response
@@ -160,15 +143,31 @@ public function vote(Request $request, EntityManagerInterface $entityManager, Ta
     }
 
 
-
     #[Route('/eval', name: 'app_tache_eval', methods: ['GET'])]
-    public function eval(TacheRepository $tacheRepository): Response
+    public function eval(TacheRepository $tacheRepository, TacheVoteRepository $tacheVoteRepository): Response
     {
+        $taches = $tacheRepository->findByEtat('Terminé');
+        $userVotes = [];
+    
+        $user = $this->getUser();
+        if ($user) {
+            foreach ($taches as $tache) {
+                $vote = $tacheVoteRepository->findOneBy(['tache' => $tache, 'user' => $user]);
+                if ($vote) {
+                    $userVotes[$tache->getId()] = true;
+                } else {
+                    $userVotes[$tache->getId()] = false;
+                }
+            }
+        }
+    
         return $this->render('tache/eval.html.twig', [
-            'taches' => $tacheRepository->findByEtat('Terminé'),
+            'taches' => $taches,
+            'userVotes' => $userVotes,
             'etat' => 2,
         ]);
     }
+    
 
     #[Route('/new', name: 'app_tache_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
