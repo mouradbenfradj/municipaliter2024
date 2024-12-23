@@ -24,6 +24,7 @@ class EmployerCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('matricule', 'Matricule'),
             TextField::new('name', 'Nom'),
+            TextField::new('eval', 'Eval'),
             AssociationField::new('groupe', 'Groupe')
                 ->setHelp('Sélectionnez le groupe auquel appartient cet employé.'),
             CollectionField::new('taches', 'Tâches')
