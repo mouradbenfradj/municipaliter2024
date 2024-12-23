@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Employer;
 use App\Entity\Tache;
 use App\Entity\TacheVote;
 use App\Form\TacheType;
@@ -35,6 +36,15 @@ class TacheController extends AbstractController
     }
     #[Route('/employer', name: 'app_tache_employer', methods: ['GET'])]
     public function employer(TacheRepository $tacheRepository): Response
+    {
+        return $this->render('tache/employer.html.twig', [
+            'taches' => $tacheRepository->findByEtat('Nouveau'),
+            'etat' => 0,
+        ]);
+    }
+    
+    #[Route('/eval_employer', name: 'app_tache_eval_employer', methods: ['GET'])]
+    public function eval_employer(TacheRepository $tacheRepository): Response
     {
         return $this->render('tache/employer.html.twig', [
             'taches' => $tacheRepository->findByEtat('Nouveau'),
@@ -80,52 +90,52 @@ class TacheController extends AbstractController
 
 
     #[Route('/tache/vote', name: 'app_tache_vote', methods: ['POST'])]
-public function vote(Request $request, EntityManagerInterface $entityManager, TacheVoteRepository $tacheVoteRepository): JsonResponse
-{
-    $id = $request->request->get('id');
-    $rating = (int) $request->request->get('rating');
-    $user = $this->getUser();
+    public function vote(Request $request, EntityManagerInterface $entityManager, TacheVoteRepository $tacheVoteRepository): JsonResponse
+    {
+        $id = $request->request->get('id');
+        $rating = (int) $request->request->get('rating');
+        $user = $this->getUser();
 
-    $tache = $entityManager->getRepository(Tache::class)->find($id);
+        $tache = $entityManager->getRepository(Tache::class)->find($id);
 
-    if (!$tache) {
-        return new JsonResponse(['status' => 'error', 'message' => 'Tâche non trouvée'], Response::HTTP_NOT_FOUND);
+        if (!$tache) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Tâche non trouvée'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Vérifier si l'utilisateur a déjà voté
+        $existingVote = $tacheVoteRepository->findOneBy(['tache' => $tache, 'user' => $user]);
+
+        if ($existingVote) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Vous avez déjà voté pour cette tâche'], Response::HTTP_FORBIDDEN);
+        }
+
+        // Enregistrer le vote de l'utilisateur
+        $vote = new TacheVote();
+        $vote->setTache($tache);
+        $vote->setUser($user);
+        $vote->setRating($rating);
+
+        $entityManager->persist($vote);
+
+        // Mettre à jour les votes dans l'entité Tache
+        if ($rating === 1) {
+            $tache->setVotesOneStar($tache->getVotesOneStar() + 1);
+        } elseif ($rating === 2) {
+            $tache->setVotesTwoStars($tache->getVotesTwoStars() + 1);
+        } else {
+            $tache->setVotesThreeStars($tache->getVotesThreeStars() + 1);
+        }
+
+        // Calculer l'évaluation finale
+        $eval = $this->calculateEval($tache);
+        $tache->setEval($eval);
+
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Vote enregistré avec succès']);
     }
 
-    // Vérifier si l'utilisateur a déjà voté
-    $existingVote = $tacheVoteRepository->findOneBy(['tache' => $tache, 'user' => $user]);
 
-    if ($existingVote) {
-        return new JsonResponse(['status' => 'error', 'message' => 'Vous avez déjà voté pour cette tâche'], Response::HTTP_FORBIDDEN);
-    }
-
-    // Enregistrer le vote de l'utilisateur
-    $vote = new TacheVote();
-    $vote->setTache($tache);
-    $vote->setUser($user);
-    $vote->setRating($rating);
-
-    $entityManager->persist($vote);
-
-    // Mettre à jour les votes dans l'entité Tache
-    if ($rating === 1) {
-        $tache->setVotesOneStar($tache->getVotesOneStar() + 1);
-    } elseif ($rating === 2) {
-        $tache->setVotesTwoStars($tache->getVotesTwoStars() + 1);
-    } else {
-        $tache->setVotesThreeStars($tache->getVotesThreeStars() + 1);
-    }
-
-    // Calculer l'évaluation finale
-    $eval = $this->calculateEval($tache);
-    $tache->setEval($eval);
-
-    $entityManager->flush();
-
-    return new JsonResponse(['status' => 'success', 'message' => 'Vote enregistré avec succès']);
-}
-
-    
 
     private function calculateEval(Tache $tache): string
     {
@@ -142,13 +152,13 @@ public function vote(Request $request, EntityManagerInterface $entityManager, Ta
         }
     }
 
-    
+
     #[Route('/eval', name: 'app_tache_eval', methods: ['GET'])]
     public function eval(TacheRepository $tacheRepository, TacheVoteRepository $tacheVoteRepository): Response
     {
         $taches = $tacheRepository->findByEtat('Terminé');
         $userVotes = [];
-    
+
         $user = $this->getUser();
         if ($user) {
             foreach ($taches as $tache) {
@@ -160,12 +170,48 @@ public function vote(Request $request, EntityManagerInterface $entityManager, Ta
                 }
             }
         }
-    
+
         return $this->render('tache/eval.html.twig', [
             'taches' => $taches,
             'userVotes' => $userVotes,
             'etat' => 2,
         ]);
+    }
+
+    #[Route('/worker/vote', name: 'app_worker_vote', methods: ['POST'])]
+    public function voteWorker(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $workerId = $request->request->get('workerId');
+        $rating = $request->request->get('rating');
+
+        $worker = $entityManager->getRepository(Employer::class)->find($workerId);
+
+        if (!$worker) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Worker non trouvé'], Response::HTTP_NOT_FOUND);
+        }
+
+        $worker->setEval($rating);
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Évaluation du worker enregistrée avec succès']);
+    }
+    #[Route('/employer/vote', name: 'app_employer_vote', methods: ['POST'])]
+    public function voteEmployer(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $tacheId = $data['tacheId'];
+        $ratings = $data['ratings']; // Array of employer ratings
+    
+        foreach ($ratings as $rating) {
+            $employer = $entityManager->getRepository(Employer::class)->find($rating['employerId']);
+    
+            if ($employer) {
+                $employer->setEval($rating['rating']);
+                $entityManager->flush();
+            }
+        }
+    
+        return new JsonResponse(['status' => 'success', 'message' => 'Évaluations des employés enregistrées avec succès']);
     }
     
 

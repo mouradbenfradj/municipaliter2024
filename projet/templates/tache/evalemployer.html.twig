@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tache index{% endblock %}
+
+{% block body %}
+<section id="faq" class="faq section light-background">
+    <!-- Section Title -->
+    <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2></h2>
+        <p></p>
+    </div>
+    <!-- End Section Title -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="faq-container">
+                    <table id="example" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Referance</th>
+                                <th>المهمة</th>
+                                <th>مدير الأشغال</th>
+                                <th>مجموعة</th>
+                                <th>عمال</th>
+                                <th>تقييم مدير الأشغال</th>
+                                <th>تقييم العمال</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tache in taches %}
+                                <tr>
+                                    <td>{{ tache.id }}</td>
+                                    <td>{{ tache.referance }}</td>
+                                    <td>{{ tache.titre }}</td>
+                                    <td>
+                                        {{ tache.worker.name }}
+                                        <select id="worker-rating-{{ tache.worker.id }}" name="worker-rating-{{ tache.worker.id }}" class="form-select">
+                                            <option value="1" {% if tache.worker.eval == '1' %}selected{% endif %}>1</option>
+                                            <option value="2" {% if tache.worker.eval == '2' %}selected{% endif %}>2</option>
+                                            <option value="3" {% if tache.worker.eval == '3' %}selected{% endif %}>3</option>
+                                            <option value="4" {% if tache.worker.eval == '4' %}selected{% endif %}>4</option>
+                                            <option value="5" {% if tache.worker.eval == '5' %}selected{% endif %}>5</option>
+                                        </select>
+                                    </td>
+                                    <td>{{ tache.workerGroup.name }}</td>
+                                    <td>
+                                        <ul>
+                                            {% for employer in tache.workerGroup.employers %}
+                                                <li>- {{ employer.name }}
+                                                    <select id="employer-rating-{{ employer.id }}" name="employer-rating-{{ employer.id }}" class="form-select">
+                                                        <option value="1" {% if employer.eval == '1' %}selected{% endif %}>1</option>
+                                                        <option value="2" {% if employer.eval == '2' %}selected{% endif %}>2</option>
+                                                        <option value="3" {% if employer.eval == '3' %}selected{% endif %}>3</option>
+                                                        <option value="4" {% if employer.eval == '4' %}selected{% endif %}>4</option>
+                                                        <option value="5" {% if employer.eval == '5' %}selected{% endif %}>5</option>
+                                                    </select>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <button class="worker-vote-button" data-worker-id="{{ tache.worker.id }}">تسجيل تقييم</button>
+                                    </td>
+                                    <td>
+                                        <button class="employer-vote-button" data-tache-id="{{ tache.id }}">تسجيل تقييمات العمال</button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="10">لم يتم العثور على سجلات</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Referance</th>
+                                <th>المهمة</th>
+                                <th>مدير الأشغال</th>
+                                <th>مجموعة</th>
+                                <th>عمال</th>
+                                <th>تقييم مدير الأشغال</th>
+                                <th>تقييم العمال</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            console.log("الصفحة جاهزة");
+
+            $('.worker-vote-button').on('click', function() {
+                var workerId = $(this).data('worker-id');
+                var rating = $('#worker-rating-' + workerId).val();
+
+                console.log("معرف مدير الأشغال:", workerId);
+                console.log("التقييم:", rating);
+
+                // إرسال تحديث التقييم إلى الخادم
+                $.ajax({
+                    url: '{{ path("app_worker_vote") }}',
+                    method: 'POST',
+                    data: { workerId: workerId, rating: rating },
+                    success: function(response) {
+                        console.log('الاستجابة:', response);
+                        alert('تم تسجيل التقييم بنجاح');
+                    },
+                    error: function(response) {
+                        console.log('خطأ:', response);
+                        alert('حدث خطأ أثناء تسجيل التقييم');
+                    }
+                });
+            });
+
+            $('.employer-vote-button').on('click', function() {
+                var tacheId = $(this).data('tache-id');
+                var ratings = [];
+
+                $('select[id^="employer-rating-"]').each(function() {
+                    var employerId = $(this).attr('id').split('-')[2];
+                    var rating = $(this).val();
+                    ratings.push({ employerId: employerId, rating: rating });
+                });
+
+                console.log("معرف المهمة:", tacheId);
+                console.log("تقييمات العمال:", JSON.stringify(ratings));
+
+                // إرسال تحديثات التقييم إلى الخادم
+                $.ajax({
+                    url: '{{ path("app_employer_vote") }}',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ tacheId: tacheId, ratings: ratings }),
+                    success: function(response) {
+                        console.log('الاستجابة:', response);
+                        alert('تم تسجيل تقييمات العمال بنجاح');
+                    },
+                    error: function(response) {
+                        console.log('خطأ:', response);
+                        alert('حدث خطأ أثناء تسجيل تقييمات العمال');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
