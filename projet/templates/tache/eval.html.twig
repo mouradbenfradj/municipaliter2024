@@ -51,7 +51,7 @@
                                     </td>
                                     <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
                                     <td>
-                                        <button class="vote-button" data-tache-id="{{ tache.id }}">تسجيل التصويت</button>
+                                        <button class="vote-button" data-tache-id="{{ tache.id }}" {% if userVotes[tache.id] %}disabled{% endif %}>تسجيل التصويت</button>
                                     </td>
                                 </tr>
                             {% else %}
@@ -108,6 +108,8 @@
                         console.log('الاستجابة:', response);
                         if (response.status === 'success') {
                             alert('تم تسجيل التصويت بنجاح');
+                            $('#rating-' + tacheId).prop('disabled', true);
+                            $('.vote-button[data-tache-id="' + tacheId + '"]').prop('disabled', true);
                         } else if (response.status === 'error') {
                             alert(response.message);
                         }
