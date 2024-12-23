@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}قائمة المهام{% endblock %}
+{% block title %}تقييم جودة العمل{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,8 +10,8 @@
 {% block body %}
 <section id="faq" class="faq section light-background">
     <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-        <h2>قائمة المهام</h2>
-        <p>هذه هي جميع المهام المجدولة.</p>
+        <h2>تقييم جودة العمل</h2>
+        <p>هذه هي جميع المهام النهائية.</p>
     </div>
     <div class="container">
         <div class="row justify-content-center">
@@ -43,7 +43,7 @@
                                     <td>{{ tache.pourcentage }}</td>
                                     <td>{{ tache.etat }}</td>
                                     <td>
-                                        <select id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" class="rating">
+                                        <select id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" class="rating" {% if userVotes[tache.id] %}disabled{% endif %}>
                                             <option value="1" {% if tache.eval == 'مراجعة' %}selected{% endif %}>مراجعة</option>
                                             <option value="2" {% if tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}selected{% endif %}>الإنجاز تم بمستوى عالٍ من الجودة</option>
                                             <option value="3" {% if tache.eval == 'جاهزة للتسليم' %}selected{% endif %}>جاهزة للتسليم</option>
