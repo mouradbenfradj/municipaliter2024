@@ -13642,4 +13642,3 @@ new DataTable('#example');
 	document.addEventListener('scroll', navmenuScrollspy);
 
 })();
-$(document).ready(function () { console.log("Page ready"); $('.rating-loading').rating({ step: 1, showClear: false, showCaption: false, starCaptions: { 1: 'مراجعة', 2: 'الإنجاز تم بمستوى عالٍ من الجودة', 3: 'جاهزة للتسليم' } }); $('.vote-button').on('click', function () { var tacheId = $(this).data('tache-id'); var rating = $('#rating-' + tacheId).val(); console.log("Tâche ID:", tacheId); console.log("Rating:", rating); $.ajax({ url: '/tache/vote', method: 'POST', data: { id: tacheId, rating: rating }, success: function (response) { console.log('Response:', response); alert('Vote enregistré avec succès'); }, error: function (response) { console.log('Error:', response); alert('Erreur lors de l\'enregistrement du vote'); } }); }); });
