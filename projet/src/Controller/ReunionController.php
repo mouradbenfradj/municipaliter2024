@@ -8,6 +8,7 @@ use App\Repository\ReunionRepository;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,6 +56,57 @@ class ReunionController extends AbstractController
             'reunions' => $reunions,
         ]);
     }
+    #[Route('/reunion/renvoie', name: 'reunion_renvoie')]
+    public function renvoie()
+    {
+        $reunions = $this->getDoctrine()->getRepository(Reunion::class)->findAll();
+
+        return $this->render('reunion/renvoie.html.twig', [
+            'reunions' => $reunions,
+        ]);
+    }
+
+
+
+    #[Route('/reunion/resend-email', name: 'app_reunion_resend_email', methods: ['POST'])]
+    public function resendEmail(Request $request, EntityManagerInterface $entityManager, MailService $mailService): JsonResponse
+    {
+        $id = $request->request->get('id');
+        $reunion = $entityManager->getRepository(Reunion::class)->find($id);
+
+        if (!$reunion) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Réunion non trouvée'], 404);
+        }
+
+        foreach ($reunion->getInvites() as $invite) {
+            $emailContent = $this->renderView('emails/reunion_email.html.twig', [
+                'sujet' => $reunion->getSujet(),
+                'description' => $reunion->getDescription(),
+                'date' => $reunion->getDate(),
+                'datefin' => $reunion->getDatefin()
+            ]);
+            $mailService->sendEmail($invite->getEmail(), 'Invitation à la réunion', $emailContent);
+        }
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Emails envoyés avec succès']);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     #[Route('/{id}', name: 'app_reunion_show', methods: ['GET'])]
     public function show(Reunion $reunion): Response

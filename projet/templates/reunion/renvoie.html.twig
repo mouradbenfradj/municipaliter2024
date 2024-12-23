@@ -19,6 +19,7 @@
                     <th>تاريخ البدء</th>
                     <th>تاريخ الانتهاء</th>
                     <th>المدعوون للاجتماع</th>
+                    <th>الإجراءات</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,10 +34,36 @@
                                 {{ invite.username }}{% if not loop.last %}, {% endif %}
                             {% endfor %}
                         </td>
+                        <td>
+                            <button class="btn btn-primary resend-email-button" data-reunion-id="{{ reunion.id }}">إعادة إرسال البريد الإلكتروني</button>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('.resend-email-button').on('click', function() {
+                var reunionId = $(this).data('reunion-id');
+
+                $.ajax({
+                    url: '{{ path("app_reunion_resend_email") }}',
+                    method: 'POST',
+                    data: { id: reunionId },
+                    success: function(response) {
+                        alert('تم إعادة إرسال البريد الإلكتروني بنجاح');
+                    },
+                    error: function(response) {
+                        alert('حدث خطأ أثناء إعادة إرسال البريد الإلكتروني');
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
