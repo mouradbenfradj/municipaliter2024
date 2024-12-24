@@ -27,12 +27,16 @@ class Employer
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'worker')]
     private Collection $taches;
 
-    #[ORM\Column(length: 255, nullable: true)] private ?string
-        $eval = null;
+    #[ORM\OneToMany(mappedBy: 'employer', targetEntity: EmployerVote::class)]
+    private Collection $votes;
+
+    #[ORM\Column(length: 255, nullable: true)] 
+    private ?string $eval = null;
 
     public function __construct()
     {
         $this->taches = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function __toString()
@@ -110,10 +114,42 @@ class Employer
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, EmployerVote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(EmployerVote $vote): static
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setEmployer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(EmployerVote $vote): static
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getEmployer() === $this) {
+                $vote->setEmployer(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getEval(): ?string
     {
         return $this->eval;
     }
+
     public function setEval(?string $eval): static
     {
         $this->eval = $eval;
