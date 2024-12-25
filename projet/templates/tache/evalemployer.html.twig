@@ -2,14 +2,32 @@
 
 {% block title %}Tache index{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .rating-select {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+        .comment-textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .btn-view-comments {
+            margin-top: 10px;
+        }
+        .comments-page {
+            margin: 20px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 <section id="faq" class="faq section light-background">
-    <!-- Section Title -->
     <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-        <h2></h2>
-        <p></p>
+        <h2>قائمة المهام</h2>
+        <p>هذه هي جميع المهام المجدولة.</p>
     </div>
-    <!-- End Section Title -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
@@ -35,39 +53,40 @@
                                     <td>{{ tache.titre }}</td>
                                     <td>
                                         {{ tache.worker.name }}
-                                        <select id="worker-rating-{{ tache.worker.id }}" name="worker-rating-{{ tache.worker.id }}" class="form-select">
+                                        <select id="worker-rating-{{ tache.worker.id }}" name="worker-rating-{{ tache.worker.id }}" class="form-select rating-select">
                                             <option value="1" {% if tache.worker.eval == '1' %}selected{% endif %}>1</option>
                                             <option value="2" {% if tache.worker.eval == '2' %}selected{% endif %}>2</option>
                                             <option value="3" {% if tache.worker.eval == '3' %}selected{% endif %}>3</option>
                                             <option value="4" {% if tache.worker.eval == '4' %}selected{% endif %}>4</option>
                                             <option value="5" {% if tache.worker.eval == '5' %}selected{% endif %}>5</option>
                                         </select>
-                                        <textarea id="worker-comment-{{ tache.worker.id }}" name="worker-comment-{{ tache.worker.id }}" class="form-control" placeholder="Votre avis sur le worker..."></textarea>
-                                        <button class="btn btn-primary worker-comment-button" data-worker-id="{{ tache.worker.id }}">Voir les avis</button>
+                                        <textarea id="worker-comment-{{ tache.worker.id }}" name="worker-comment-{{ tache.worker.id }}" class="form-control comment-textarea" placeholder="Votre avis sur le worker..."></textarea>
+                                        <button class="btn btn-primary btn-view-comments" data-worker-id="{{ tache.worker.id }}">Voir les avis</button>
                                     </td>
                                     <td>{{ tache.workerGroup.name }}</td>
                                     <td>
                                         <ul>
                                             {% for employer in tache.workerGroup.employers %}
-                                                <li>- {{ employer.name }}
-                                                    <select id="employer-rating-{{ employer.id }}" name="employer-rating-{{ employer.id }}" class="form-select">
+                                                <li>
+                                                    - {{ employer.name }}
+                                                    <select id="employer-rating-{{ employer.id }}" name="employer-rating-{{ employer.id }}" class="form-select rating-select">
                                                         <option value="1" {% if employer.eval == '1' %}selected{% endif %}>1</option>
                                                         <option value="2" {% if employer.eval == '2' %}selected{% endif %}>2</option>
                                                         <option value="3" {% if employer.eval == '3' %}selected{% endif %}>3</option>
                                                         <option value="4" {% if employer.eval == '4' %}selected{% endif %}>4</option>
                                                         <option value="5" {% if employer.eval == '5' %}selected{% endif %}>5</option>
                                                     </select>
-                                                    <textarea id="employer-comment-{{ employer.id }}" name="employer-comment-{{ employer.id }}" class="form-control" placeholder="Votre avis sur l'employé..."></textarea>
-                                                    <button class="btn btn-primary employer-comment-button" data-employer-id="{{ employer.id }}">Voir les avis</button>
+                                                    <textarea id="employer-comment-{{ employer.id }}" name="employer-comment-{{ employer.id }}" class="form-control comment-textarea" placeholder="Votre avis sur l'employé..."></textarea>
+                                                    <button class="btn btn-primary btn-view-comments" data-employer-id="{{ employer.id }}">Voir les avis</button>
                                                 </li>
                                             {% endfor %}
                                         </ul>
                                     </td>
                                     <td>
-                                        <button class="worker-vote-button" data-worker-id="{{ tache.worker.id }}">تسجيل تقييم</button>
+                                        <button class="btn btn-success worker-vote-button" data-worker-id="{{ tache.worker.id }}">تسجيل تقييم</button>
                                     </td>
                                     <td>
-                                        <button class="employer-vote-button" data-tache-id="{{ tache.id }}">تسجيل تقييمات العمال</button>
+                                        <button class="btn btn-success employer-vote-button" data-tache-id="{{ tache.id }}">تسجيل تقييمات العمال</button>
                                     </td>
                                 </tr>
                             {% else %}
@@ -159,25 +178,9 @@
                 });
             });
 
-            $('.worker-comment-button, .employer-comment-button').on('click', function() {
+            $('.btn-view-comments').on('click', function() {
                 var employerId = $(this).data('employer-id') || $(this).data('worker-id');
-
-                // طلب الحصول على التعليقات من الخادم
-                $.ajax({
-                    url: '{{ path("app_employer_comments", {"employerId": "employerIdPlaceholder"}) }}'.replace('employerIdPlaceholder', employerId),
-                    method: 'GET',
-                    success: function(response) {
-                        console.log('الاستجابة:', response);
-                        var comments = response.comments.map(function(comment) {
-                            return '<p><strong>' + comment.user + ':</strong> ' + comment.comment + ' (' + comment.rating + ' نجوم)</p>';
-                        }).join('');
-                        alert('التعليقات:\n\n' + comments);
-                    },
-                    error: function(response) {
-                        console.log('خطأ:', response);
-                        alert('حدث خطأ أثناء جلب التعليقات');
-                    }
-                });
+                window.location.href = '{{ path("app_comments_page", {"employerId": "employerIdPlaceholder"}) }}'.replace('employerIdPlaceholder', employerId);
             });
         });
     </script>

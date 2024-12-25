@@ -264,6 +264,23 @@ class TacheController extends AbstractController
         return $totalVotes > 0 ? (string) ($sum / $totalVotes) : '0';
     }
 
+    #[Route('/employer/comments/{employerId}', name: 'app_comments_page', methods: ['GET'])]
+    public function commentsPage(int $employerId, EmployerVoteRepository $employerVoteRepository): Response
+    {
+        $votes = $employerVoteRepository->findBy(['employer' => $employerId]);
+
+        $comments = array_map(function ($vote) {
+            return [
+                'user' => $vote->getUser()->getUsername(),
+                'rating' => $vote->getRating(),
+                'comment' => $vote->getComment(),
+            ];
+        }, $votes);
+
+        return $this->render('comments/view.html.twig', [
+            'comments' => $comments,
+        ]);
+    }
 
     #[Route('/employer/comments/{employerId}', name: 'app_employer_comments', methods: ['GET'])]
     public function getEmployerComments(int $employerId, EmployerVoteRepository $employerVoteRepository): JsonResponse

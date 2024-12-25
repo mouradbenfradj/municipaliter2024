@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis des Utilisateurs{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .comments-container {
+            margin: 20px;
+        }
+        .comment-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .comment-user {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .comment-rating {
+            color: #f39c12;
+            margin-bottom: 5px;
+        }
+        .comment-text {
+            font-style: italic;
+        }
+        .back-button {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<section id="comments" class="comments section light-background">
+    <!-- Section Title -->
+    <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2>Commentaires des Utilisateurs</h2>
+        <p>Voici les commentaires des utilisateurs pour l'employé sélectionné.</p>
+    </div>
+    <!-- End Section Title -->
+    <div class="container comments-container">
+        {% if comments is not empty %}
+            {% for comment in comments %}
+                <div class="comment-item">
+                    <div class="comment-user">{{ comment.user }}</div>
+                    <div class="comment-rating">Note: {{ comment.rating }} étoiles</div>
+                    <div class="comment-text">"{{ comment.comment }}"</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucun commentaire trouvé.</p>
+        {% endif %}
+        <a href="{{ path('app_tache_index') }}" class="btn btn-secondary back-button">Retour à la liste des tâches</a>
+    </div>
+</section>
+{% endblock %}
