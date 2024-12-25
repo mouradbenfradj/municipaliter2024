@@ -16,6 +16,7 @@ use App\Entity\Tache;
 use App\Entity\Article;
 use App\Entity\Commentaire;
 use App\Entity\Document;
+use App\Entity\EmployerVote;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Entity\Livre;
@@ -70,6 +71,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Category', 'fas fa-list', Category::class);
         yield MenuItem::linkToCrud('Group', 'fas fa-list', Group::class);
         yield MenuItem::linkToCrud('Employer', 'fas fa-list', Employer::class);
+        yield MenuItem::linkToCrud('EmployerVote', 'fas fa-list', EmployerVote::class);
         yield MenuItem::linkToCrud('Tache', 'fas fa-list', Tache::class);
         yield MenuItem::linkToCrud('TacheVote', 'fas fa-list', TacheVote::class);
         yield MenuItem::linkToCrud('Document', 'fas fa-list', Document::class);
