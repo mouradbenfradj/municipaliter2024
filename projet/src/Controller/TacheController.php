@@ -265,6 +265,24 @@ class TacheController extends AbstractController
     }
 
 
+    #[Route('/employer/comments/{employerId}', name: 'app_employer_comments', methods: ['GET'])]
+    public function getEmployerComments(int $employerId, EmployerVoteRepository $employerVoteRepository): JsonResponse
+    {
+        $votes = $employerVoteRepository->findBy(['employer' => $employerId]);
+
+        $comments = array_map(function ($vote) {
+            return [
+                'user' => $vote->getUser()->getUsername(),
+                'rating' => $vote->getRating(),
+                'comment' => $vote->getComment(),
+            ];
+        }, $votes);
+
+        return new JsonResponse(['comments' => $comments]);
+    }
+
+
+
 
     #[Route('/new', name: 'app_tache_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
