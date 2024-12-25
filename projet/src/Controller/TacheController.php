@@ -179,7 +179,7 @@ class TacheController extends AbstractController
             'etat' => 2,
         ]);
     }
-    
+
 
     #[Route('/worker/vote', name: 'app_worker_vote', methods: ['POST'])]
     public function voteWorker(Request $request, EntityManagerInterface $entityManager, EmployerVoteRepository $employerVoteRepository): JsonResponse
@@ -187,15 +187,15 @@ class TacheController extends AbstractController
         $workerId = $request->request->get('workerId');
         $rating = (int) $request->request->get('rating');
         $user = $this->getUser();
-    
+
         $worker = $entityManager->getRepository(Employer::class)->find($workerId);
-    
+
         if (!$worker) {
             return new JsonResponse(['status' => 'error', 'message' => 'Worker non trouvé'], Response::HTTP_NOT_FOUND);
         }
-    
+
         $existingVote = $employerVoteRepository->findOneBy(['employer' => $worker, 'user' => $user]);
-    
+
         if ($existingVote) {
             $existingVote->setRating($rating);
         } else {
@@ -203,34 +203,34 @@ class TacheController extends AbstractController
             $vote->setEmployer($worker);
             $vote->setUser($user);
             $vote->setRating($rating);
-    
+
             $entityManager->persist($vote);
         }
-    
+
         $entityManager->flush();
-    
+
         $averageRating = $this->calculateAverageRating($worker);
         $worker->setEval($averageRating);
         $entityManager->flush();
-    
+
         return new JsonResponse(['status' => 'success', 'message' => 'Évaluation du worker enregistrée avec succès']);
     }
-    
+
     #[Route('/employer/vote', name: 'app_employer_vote', methods: ['POST'])]
-    public function voteEmployer(Request $request, EntityManagerInterface $entityManager, EmployerVoteRepository$employerVoteRepository): JsonResponse
+    public function voteEmployer(Request $request, EntityManagerInterface $entityManager, EmployerVoteRepository $employerVoteRepository): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $tacheId = $data['tacheId'];
         $ratings = $data['ratings']; // Array of employer ratings
         $user = $this->getUser();
-    
+
         foreach ($ratings as $ratingData) {
             $employer = $entityManager->getRepository(Employer::class)->find($ratingData['employerId']);
             $rating = (int) $ratingData['rating'];
-    
+
             if ($employer) {
                 $existingVote = $employerVoteRepository->findOneBy(['employer' => $employer, 'user' => $user]);
-    
+
                 if ($existingVote) {
                     $existingVote->setRating($rating);
                 } else {
@@ -238,21 +238,21 @@ class TacheController extends AbstractController
                     $vote->setEmployer($employer);
                     $vote->setUser($user);
                     $vote->setRating($rating);
-    
+
                     $entityManager->persist($vote);
                 }
-    
+
                 $entityManager->flush();
-    
+
                 $averageRating = $this->calculateAverageRating($employer);
                 $employer->setEval($averageRating);
                 $entityManager->flush();
             }
         }
-    
+
         return new JsonResponse(['status' => 'success', 'message' => 'Évaluations des employés enregistrées avec succès']);
     }
-    
+
     private function calculateAverageRating(Employer $employer): string
     {
         $votes = $employer->getVotes();
@@ -260,10 +260,9 @@ class TacheController extends AbstractController
         $sum = array_reduce($votes->toArray(), function ($carry, $vote) {
             return $carry + $vote->getRating();
         }, 0);
-    
+
         return $totalVotes > 0 ? (string) ($sum / $totalVotes) : '0';
     }
-    
 
 
 

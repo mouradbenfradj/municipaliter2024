@@ -42,6 +42,8 @@
                                             <option value="4" {% if tache.worker.eval == '4' %}selected{% endif %}>4</option>
                                             <option value="5" {% if tache.worker.eval == '5' %}selected{% endif %}>5</option>
                                         </select>
+                                        <textarea id="worker-comment-{{ tache.worker.id }}" name="worker-comment-{{ tache.worker.id }}" class="form-control" placeholder="Votre avis sur le worker..."></textarea>
+                                        <button class="btn btn-primary worker-comment-button" data-worker-id="{{ tache.worker.id }}">Voir les avis</button>
                                     </td>
                                     <td>{{ tache.workerGroup.name }}</td>
                                     <td>
@@ -55,6 +57,8 @@
                                                         <option value="4" {% if employer.eval == '4' %}selected{% endif %}>4</option>
                                                         <option value="5" {% if employer.eval == '5' %}selected{% endif %}>5</option>
                                                     </select>
+                                                    <textarea id="employer-comment-{{ employer.id }}" name="employer-comment-{{ employer.id }}" class="form-control" placeholder="Votre avis sur l'employé..."></textarea>
+                                                    <button class="btn btn-primary employer-comment-button" data-employer-id="{{ employer.id }}">Voir les avis</button>
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -102,15 +106,17 @@
             $('.worker-vote-button').on('click', function() {
                 var workerId = $(this).data('worker-id');
                 var rating = $('#worker-rating-' + workerId).val();
+                var comment = $('#worker-comment-' + workerId).val();
 
                 console.log("معرف مدير الأشغال:", workerId);
                 console.log("التقييم:", rating);
+                console.log("التعليق:", comment);
 
                 // إرسال تحديث التقييم إلى الخادم
                 $.ajax({
                     url: '{{ path("app_worker_vote") }}',
                     method: 'POST',
-                    data: { workerId: workerId, rating: rating },
+                    data: { workerId: workerId, rating: rating, comment: comment },
                     success: function(response) {
                         console.log('الاستجابة:', response);
                         alert('تم تسجيل التقييم بنجاح');
@@ -129,7 +135,8 @@
                 $('select[id^="employer-rating-"]').each(function() {
                     var employerId = $(this).attr('id').split('-')[2];
                     var rating = $(this).val();
-                    ratings.push({ employerId: employerId, rating: rating });
+                    var comment = $('#employer-comment-' + employerId).val();
+                    ratings.push({ employerId: employerId, rating: rating, comment: comment });
                 });
 
                 console.log("معرف المهمة:", tacheId);
@@ -148,6 +155,27 @@
                     error: function(response) {
                         console.log('خطأ:', response);
                         alert('حدث خطأ أثناء تسجيل تقييمات العمال');
+                    }
+                });
+            });
+
+            $('.worker-comment-button, .employer-comment-button').on('click', function() {
+                var employerId = $(this).data('employer-id') || $(this).data('worker-id');
+
+                // طلب الحصول على التعليقات من الخادم
+                $.ajax({
+                    url: '{{ path("app_employer_comments", {"employerId": "employerIdPlaceholder"}) }}'.replace('employerIdPlaceholder', employerId),
+                    method: 'GET',
+                    success: function(response) {
+                        console.log('الاستجابة:', response);
+                        var comments = response.comments.map(function(comment) {
+                            return '<p><strong>' + comment.user + ':</strong> ' + comment.comment + ' (' + comment.rating + ' نجوم)</p>';
+                        }).join('');
+                        alert('التعليقات:\n\n' + comments);
+                    },
+                    error: function(response) {
+                        console.log('خطأ:', response);
+                        alert('حدث خطأ أثناء جلب التعليقات');
                     }
                 });
             });

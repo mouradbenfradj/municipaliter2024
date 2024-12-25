@@ -13,7 +13,7 @@ class EmployerVote
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Employer::class)]
+    #[ORM\ManyToOne(targetEntity: Employer::class, inversedBy: 'votes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Employer $employer = null;
 
@@ -23,6 +23,9 @@ class EmployerVote
 
     #[ORM\Column(type: "integer")]
     private int $rating;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $comment = null;
 
     public function getId(): ?int
     {
@@ -61,6 +64,18 @@ class EmployerVote
     public function setRating(int $rating): static
     {
         $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }
