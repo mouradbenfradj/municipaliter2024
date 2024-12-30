@@ -49,7 +49,7 @@ class TacheController extends AbstractController
     public function eval_employer(TacheRepository $tacheRepository): Response
     {
         return $this->render('tache/evalemployer.html.twig', [
-            'taches' => $tacheRepository->findByEtat('Nouveau'),
+            'taches' => $tacheRepository->findByEtat('Terminé'),
             'etat' => 0,
         ]);
     }
@@ -180,12 +180,12 @@ class TacheController extends AbstractController
         ]);
     }
 
-
     #[Route('/worker/vote', name: 'app_worker_vote', methods: ['POST'])]
     public function voteWorker(Request $request, EntityManagerInterface $entityManager, EmployerVoteRepository $employerVoteRepository): JsonResponse
     {
         $workerId = $request->request->get('workerId');
         $rating = (int) $request->request->get('rating');
+        $comment = $request->request->get('comment'); // Récupération du commentaire
         $user = $this->getUser();
 
         $worker = $entityManager->getRepository(Employer::class)->find($workerId);
@@ -194,15 +194,20 @@ class TacheController extends AbstractController
             return new JsonResponse(['status' => 'error', 'message' => 'Worker non trouvé'], Response::HTTP_NOT_FOUND);
         }
 
+        // Vérifiez si l'utilisateur a déjà voté
         $existingVote = $employerVoteRepository->findOneBy(['employer' => $worker, 'user' => $user]);
 
         if ($existingVote) {
+            // Si l'utilisateur a déjà voté, mettez à jour la note et le commentaire
             $existingVote->setRating($rating);
+            $existingVote->setComment($comment); // Mettez à jour le commentaire
         } else {
+            // Sinon, créez un nouveau vote
             $vote = new EmployerVote();
             $vote->setEmployer($worker);
             $vote->setUser($user);
             $vote->setRating($rating);
+            $vote->setComment($comment); // Assurez-vous de sauvegarder le commentaire
 
             $entityManager->persist($vote);
         }
@@ -227,17 +232,20 @@ class TacheController extends AbstractController
         foreach ($ratings as $ratingData) {
             $employer = $entityManager->getRepository(Employer::class)->find($ratingData['employerId']);
             $rating = (int) $ratingData['rating'];
+            $comment = $ratingData['comment']; // Retrieve the comment
 
             if ($employer) {
                 $existingVote = $employerVoteRepository->findOneBy(['employer' => $employer, 'user' => $user]);
 
                 if ($existingVote) {
                     $existingVote->setRating($rating);
+                    $existingVote->setComment($comment); // Update the comment
                 } else {
                     $vote = new EmployerVote();
                     $vote->setEmployer($employer);
                     $vote->setUser($user);
                     $vote->setRating($rating);
+                    $vote->setComment($comment); // Save the comment
 
                     $entityManager->persist($vote);
                 }
@@ -265,10 +273,15 @@ class TacheController extends AbstractController
     }
 
     #[Route('/employer/comments/{employerId}', name: 'app_comments_page', methods: ['GET'])]
-    public function commentsPage(int $employerId, EmployerVoteRepository $employerVoteRepository): Response
+    public function commentsPage(int $employerId, EmployerVoteRepository $employerVoteRepository, EntityManagerInterface $entityManager): Response
     {
+        // Récupérer les votes pour l'employé
         $votes = $employerVoteRepository->findBy(['employer' => $employerId]);
 
+        // Récupérer l'employé
+        $employer = $entityManager->getRepository(Employer::class)->find($employerId);
+
+        // Mapper les commentaires
         $comments = array_map(function ($vote) {
             return [
                 'user' => $vote->getUser()->getUsername(),
@@ -279,26 +292,9 @@ class TacheController extends AbstractController
 
         return $this->render('comments/view.html.twig', [
             'comments' => $comments,
+            'employer' => $employer, // Passer l'employé à la vue
         ]);
     }
-
-    #[Route('/employer/comments/{employerId}', name: 'app_employer_comments', methods: ['GET'])]
-    public function getEmployerComments(int $employerId, EmployerVoteRepository $employerVoteRepository): JsonResponse
-    {
-        $votes = $employerVoteRepository->findBy(['employer' => $employerId]);
-
-        $comments = array_map(function ($vote) {
-            return [
-                'user' => $vote->getUser()->getUsername(),
-                'rating' => $vote->getRating(),
-                'comment' => $vote->getComment(),
-            ];
-        }, $votes);
-
-        return new JsonResponse(['comments' => $comments]);
-    }
-
-
 
 
     #[Route('/new', name: 'app_tache_new', methods: ['GET', 'POST'])]

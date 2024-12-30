@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Avis des Utilisateurs{% endblock %}
+{% block title %}آراء المستخدمين{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -34,25 +34,25 @@
 
 {% block body %}
 <section id="comments" class="comments section light-background">
-    <!-- Section Title -->
+    <!-- عنوان القسم -->
     <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-        <h2>Commentaires des Utilisateurs</h2>
-        <p>Voici les commentaires des utilisateurs pour l'employé sélectionné.</p>
+        <h2>تعليقات المستخدمين على {{ employer.name }}</h2> <!-- عرض اسم الموظف -->
+        <p>هذه هي تعليقات المستخدمين على الموظف المحدد.</p>
     </div>
-    <!-- End Section Title -->
+    <!-- نهاية عنوان القسم -->
     <div class="container comments-container">
         {% if comments is not empty %}
             {% for comment in comments %}
                 <div class="comment-item">
                     <div class="comment-user">{{ comment.user }}</div>
-                    <div class="comment-rating">Note: {{ comment.rating }} étoiles</div>
-                    <div class="comment-text">"{{ comment.comment }}"</div>
+                    <div class="comment-rating">التقييم: {{ comment.rating }} نجوم</div>
+                    <div class="comment-text">{{ comment.comment }}</div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>Aucun commentaire trouvé.</p>
+            <p>لم يتم العثور على تعليقات.</p>
         {% endif %}
-        <a href="{{ path('app_tache_index') }}" class="btn btn-secondary back-button">Retour à la liste des tâches</a>
+        <a href="{{ path('app_tache_index') }}" class="btn btn-secondary back-button">العودة إلى قائمة المهام</a>
     </div>
 </section>
 {% endblock %}
