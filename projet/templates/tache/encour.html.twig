@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tache index
+{% endblock %}
+
+{% block body %}
+	{#     <h1>Tache index</h1>
+			 #}
+	<section
+		id="faq" class="faq section light-background">
+
+		<!-- Section Title -->
+		<div class="container section-title aos-init aos-animate" data-aos="fade-up">
+			<h2>{# Frequently Asked Questions #}</h2>
+			<p>{# Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit #}</p>
+		</div>
+		<!-- End Section Title -->
+		<div class="container">
+
+			<div class="row justify-content-center">
+
+				<div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+					<div class="faq-container">
+
+						<table id="example" class="display" style="width:100%">
+							<thead>
+								<tr>
+
+									<th>Id</th>
+									<th>Referance</th>
+									<th>المهمة
+									</th>
+									<th>تاريخ انطلاق المهمة</th>
+									<th>مدة إنجاز المهمة</th>
+									<th>
+										نسبة الإنجاز</th>
+									<th>وضع المهمة الحالي</th>
+									<th>تقييم جودة العمل</th>
+									<th>تاريخ الانتهاء الفعلي</th>
+									<th dir="rtl" class="arabic">إضافة تعليق</th>
+									<th dir="rtl" class="arabic">عرض التعليقات</th>
+									{#                 <th>actions</th>
+																											 #}
+								</tr>
+							</thead>
+							<tbody>
+								{% for tache in taches %}
+									<tr>
+										<td>{{ tache.id }}</td>
+										<td>{{ tache.referance }}</td>
+										<td>{{ tache.titre }}</td>
+										<td>{{ tache.debut ? tache.debut|date('Y-m-d') : '' }}</td>
+										<td>{{ tache.estimation }}</td>
+										<td>{{ tache.pourcentage }}</td>
+										<td>{{ tache.etat }}</td>
+										<td>{{ tache.eval }}</td>
+										<td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
+										<td dir="rtl" class="arabic">
+											<form action="{{ path('app_tache_feedback', {'id': tache.id}) }}" method="post">
+												<textarea name="contenu" placeholder="إضافة تعليق"></textarea>
+												<button type="submit">إرسال</button>
+											</form>
+										</td>
+										<td dir="rtl" class="arabic">
+											<a href="{{ path('app_tache_feedbacks', {'id': tache.id}) }}">عرض التعليقات</a>
+										</td>
+										{#  <td>
+																														                    <a href="{{ path('app_tache_show', {'id': tache.id}) }}">show</a>
+																														                    <a href="{{ path('app_tache_edit', {'id': tache.id}) }}">edit</a>
+																														                </td> #}
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="10">{{ 'no_records_found'|trans }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Id</th>
+									<th>Referance</th>
+									<th>المهمة
+									</th>
+									<th>تاريخ انطلاق المهمة</th>
+									<th>مدة إنجاز المهمة</th>
+
+									<th>
+										نسبة الإنجاز</th>
+									<th>وضع المهمة الحالي</th>
+									<th>تقييم جودة العمل</th>
+
+									<th>تاريخ الانتهاء الفعلي</th>
+									<th dir="rtl" class="arabic">إضافة تعليق</th>
+									<th dir="rtl" class="arabic">عرض التعليقات</th>
+									{#                 <th>actions</th>
+																											 #}
+								</tr>
+							</tfoot>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{#     <a href="{{ path('app_tache_new') }}">Create new</a>
+			 #}
+{% endblock %}

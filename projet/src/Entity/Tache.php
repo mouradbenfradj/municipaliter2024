@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TacheRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TacheRepository::class)]
@@ -49,6 +51,40 @@ class Tache
     private int $votesTwoStars = 0;
     #[ORM\Column(type: Types::INTEGER)]
     private int $votesThreeStars = 0;
+    #[ORM\OneToMany(mappedBy: 'tache', targetEntity: Feedback::class)]
+    private $feedbacks;
+
+    public function __construct()
+    {
+        $this->feedbacks = new ArrayCollection();
+    }
+
+    public function getFeedbacks(): Collection
+    {
+        return $this->feedbacks;
+    }
+
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedbacks->contains($feedback)) {
+            $this->feedbacks[] = $feedback;
+            $feedback->setTache($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedbacks->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getTache() === $this) {
+                $feedback->setTache(null);
+            }
+        }
+
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;

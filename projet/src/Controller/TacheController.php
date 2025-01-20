@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Employer;
 use App\Entity\EmployerVote;
+use App\Entity\Feedback;
 use App\Entity\Tache;
 use App\Entity\TacheVote;
 use App\Form\TacheType;
 use App\Repository\EmployerVoteRepository;
+use App\Repository\FeedbackRepository;
 use App\Repository\TacheRepository;
 use App\Repository\TacheVoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,12 +77,48 @@ class TacheController extends AbstractController
     #[Route('/encour', name: 'app_tache_encour', methods: ['GET'])]
     public function encour(TacheRepository $tacheRepository): Response
     {
-        return $this->render('tache/index.html.twig', [
+        return $this->render('tache/encour.html.twig', [
             'taches' => $tacheRepository->findByEtat('En cours'),
             'etat' => 1,
         ]);
     }
+    #[Route('/tache/{id}/feedback', name: 'app_tache_feedback', methods: ['POST'])]
+    public function feedback(Request $request, Tache $tache, EntityManagerInterface $entityManager): Response
+    {
+        $feedback = new Feedback();
+        $feedback->setTache($tache);
+        $feedback->setUtilisateur($this->getUser());
+        $feedback->setContenu($request->request->get('contenu'));
 
+        $entityManager->persist($feedback);
+        $entityManager->flush();
+
+        return $this->render('tache/feedbacks.html.twig', [
+            'feedbacks' => [$feedback],
+            'tache' => $tache, // Ajoutez la tâche au contexte pour l'utiliser dans le Twig
+        ]);
+    }
+    #[Route('/tache/{id}/feedbacks', name: 'app_tache_feedbacks', methods: ['GET'])]
+    public function feedbacks(Tache $tache, FeedbackRepository $feedbackRepository): Response
+    {
+        // Vérifie si la tâche existe
+        if (!$tache) {
+            throw $this->createNotFoundException('La tâche demandée n\'existe pas.');
+        }
+
+        // Récupère les feedbacks associés à la tâche
+        $feedbacks = $feedbackRepository->findBy(['tache' => $tache]);
+
+        // Si aucun feedback n'est trouvé, vous pouvez passer un message à la vue
+        if (empty($feedbacks)) {
+            $this->addFlash('info', 'Aucun feedback trouvé pour cette tâche.');
+        }
+
+        return $this->render('tache/feedbacks.html.twig', [
+            'feedbacks' => $feedbacks,
+            'tache' => $tache, // Ajoutez la tâche au contexte pour l'utiliser dans le Twig
+        ]);
+    }
     #[Route('/terminer', name: 'app_tache_terminer', methods: ['GET'])]
     public function terminer(TacheRepository $tacheRepository): Response
     {

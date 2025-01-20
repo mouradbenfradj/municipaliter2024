@@ -1,0 +1,31 @@
+{# templates/tache/feedback.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}التعليقات على المهمة:
+	{{ tache.titre }}
+{% endblock %}
+
+{% block body %}
+	<h1 style="text-align: right;">التعليقات على المهمة:
+		{{ tache.titre }}</h1>
+
+	<div class="feedback-list" style="direction: rtl; text-align: right;">
+		{% for feedback in tache.feedbacks %}
+			<div class="feedback-item" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+				<h3 style="margin-top: 0;">التعليق من:
+					{{ feedback.utilisateur.username }}</h3>
+				<p>
+					<strong>المحتوى:</strong>
+					{{ feedback.contenu }}</p>
+				<p>
+					<strong>التاريخ:</strong>
+					{{ feedback.dateCreation|date('Y-m-d H:i:s') }}</p>
+			</div>
+			<hr>
+		{% else %}
+			<p>لا توجد تعليقات متاحة لهذه المهمة.</p>
+		{% endfor %}
+	</div>
+
+{% endblock %}

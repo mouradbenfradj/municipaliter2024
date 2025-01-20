@@ -1,122 +1,183 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}قائمة المهام{% endblock %}
+{% block title %}قائمة المهام
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.9/css/star-rating.min.css" rel="stylesheet">
+	{{ parent() }}
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.9/css/star-rating.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<section id="faq" class="faq section light-background">
-    <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-        <h2>قائمة المهام</h2>
-        <p>هذه هي جميع المهام المجدولة.</p>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                <div class="faq-container">
-                    <table id="example" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>المعرف</th>
-                                <th>المرجع</th>
-                                <th>المهمة</th>
-                                <th>تاريخ انطلاق المهمة</th>
-                                <th>مدة إنجاز المهمة</th>
-                                <th>نسبة الإنجاز</th>
-                                <th>وضع المهمة الحالي</th>
-                                <th>تقييم جودة العمل</th>
-                                <th>تاريخ الانتهاء الفعلي</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for tache in taches %}
-                                <tr>
-                                    <td>{{ tache.id }}</td>
-                                    <td>{{ tache.referance }}</td>
-                                    <td>{{ tache.titre }}</td>
-                                    <td>{{ tache.debut ? tache.debut|date('Y-m-d') : '' }}</td>
-                                    <td>{{ tache.estimation }}</td>
-                                    <td>{{ tache.pourcentage }}</td>
-                                    <td>{{ tache.etat }}</td>
-                                    <td>
-                                        <select id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" class="form-select">
-                                            <option value="مراجعة" {% if tache.eval == 'مراجعة' %}selected{% endif %}>مراجعة</option>
-                                            <option value="الإنجاز تم بمستوى عالٍ من الجودة" {% if tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %}selected{% endif %}>الإنجاز تم بمستوى عالٍ من الجودة</option>
-                                            <option value="جاهزة للتسليم" {% if tache.eval == 'جاهزة للتسليم' %}selected{% endif %}>جاهزة للتسليم</option>
-                                        </select>
-                                    </td>
-                                    <td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
-                                    <td>
-                                        <button class="vote-button" data-tache-id="{{ tache.id }}" {% if userVotes[tache.id] %}disabled{% endif %}>تسجيل التصويت</button>
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="10">لم يتم العثور على سجلات</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>المعرف</th>
-                                <th>المرجع</th>
-                                <th>المهمة</th>
-                                <th>تاريخ انطلاق المهمة</th>
-                                <th>مدة إنجاز المهمة</th>
-                                <th>نسبة الإنجاز</th>
-                                <th>وضع المهمة الحالي</th>
-                                <th>تقييم جودة العمل</th>
-                                <th>تاريخ الانتهاء الفعلي</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+	<section id="faq" class="faq section light-background">
+		<div class="container section-title aos-init aos-animate" data-aos="fade-up">
+			<h2>قائمة المهام</h2>
+			<p>هذه هي جميع المهام المجدولة.</p>
+		</div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-10 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+					<div class="faq-container">
+						<table id="example" class="display" style="width:100%">
+							<thead>
+								<tr>
+									<th>المعرف</th>
+									<th>المرجع</th>
+									<th>المهمة</th>
+									<th>تاريخ انطلاق المهمة</th>
+									<th>مدة إنجاز المهمة</th>
+									<th>نسبة الإنجاز</th>
+									<th>وضع المهمة الحالي</th>
+									<th>تقييم جودة العمل</th>
+									<th>تاريخ الانتهاء الفعلي</th>
+									<th>الإجراءات</th>
+									<th dir="rtl" class="arabic">إضافة تعليق</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for tache in taches %}
+									<tr>
+										<td>{{ tache.id }}</td>
+										<td>{{ tache.referance }}</td>
+										<td>{{ tache.titre }}</td>
+										<td>{{ tache.debut ? tache.debut|date('Y-m-d') : '' }}</td>
+										<td>{{ tache.estimation }}</td>
+										<td>{{ tache.pourcentage }}</td>
+										<td>{{ tache.etat }}</td>
+										<td>
+											<select id="rating-{{ tache.id }}" name="rating-{{ tache.id }}" class="form-select">
+												<option value="مراجعة" {% if tache.eval == 'مراجعة' %} selected {% endif %}>مراجعة</option>
+												<option value="الإنجاز تم بمستوى عالٍ من الجودة" {% if tache.eval == 'الإنجاز تم بمستوى عالٍ من الجودة' %} selected {% endif %}>الإنجاز تم بمستوى عالٍ من الجودة</option>
+												<option value="جاهزة للتسليم" {% if tache.eval == 'جاهزة للتسليم' %} selected {% endif %}>جاهزة للتسليم</option>
+											</select>
+										</td>
+										<td>{{ tache.dateFin ? tache.dateFin|date('Y-m-d') : '' }}</td>
+										<td>
+											<button class="vote-button" data-tache-id="{{ tache.id }}" {% if userVotes[tache.id] %} disabled {% endif %}>تسجيل التصويت</button>
+										</td>
+										<td dir="rtl" class="arabic">
+											<form action="{{ path('app_tache_feedback', {'id': tache.id}) }}" method="post">
+												<textarea name="contenu" placeholder="إضافة تعليق"></textarea>
+												<button type="submit">إرسال</button>
+											</form>
+
+											<a href="{{ path('app_tache_feedbacks', {'id': tache.id}) }}">عرض التعليقات</a>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="10">لم يتم العثور على سجلات</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>المعرف</th>
+									<th>المرجع</th>
+									<th>المهمة</th>
+									<th>تاريخ انطلاق المهمة</th>
+									<th>مدة إنجاز المهمة</th>
+									<th>نسبة الإنجاز</th>
+									<th>وضع المهمة الحالي</th>
+									<th>تقييم جودة العمل</th>
+									<th>تاريخ الانتهاء الفعلي</th>
+									<th>الإجراءات</th>
+									<th dir="rtl" class="arabic">إضافة تعليق</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            console.log("الصفحة جاهزة");
+	{{ parent() }}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+		$( document ).ready( function ()
+{
 
-            $('.vote-button').on('click', function() {
-                var tacheId = $(this).data('tache-id');
-                var rating = $('#rating-' + tacheId).val();
 
-                console.log("معرف المهمة:", tacheId);
-                console.log("التقييم:", rating);
 
-                // إرسال تحديث التقييم إلى الخادم
-                $.ajax({
-                    url: '{{ path("app_tache_vote") }}',
-                    method: 'POST',
-                    data: { id: tacheId, rating: rating },
-                    success: function(response) {
-                        console.log('الاستجابة:', response);
-                        if (response.status === 'success') {
-                            alert('تم تسجيل التصويت بنجاح');
-                            $('#rating-' + tacheId).prop('disabled', true);
-                            $('.vote-button[data-tache-id="' + tacheId + '"]').prop('disabled', true);
-                        } else if (response.status === 'error') {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(response) {
-                        console.log('خطأ:', response);
-                        alert('حدث خطأ أثناء تسجيل التصويت');
-                    }
-                });
-            });
-        });
-    </script>
+console.log( "الصفحة جاهزة" );
+
+$( '.vote-button' ).on( 'click', function ()
+{
+
+
+
+var tacheId = $( this ).data( 'tache-id' );
+var rating = $( '#rating-' + tacheId ).val();
+
+console.log( "معرف المهمة:", tacheId );
+console.log( "التقييم:", rating );
+
+// إرسال تحديث التقييم إلى الخادم
+$.ajax( {
+
+
+
+url: '{{ path("app_tache_vote") }}',
+method: 'POST',
+data: {
+
+
+
+id: tacheId,
+rating: rating,
+},
+success: function ( response )
+{
+
+
+
+console.log( 'الاستجابة:', response );
+if ( response.status === 'success' )
+{
+
+
+
+alert( 'تم تسجيل التصويت بنجاح' );
+$( '#rating-' + tacheId ).prop( 'disabled', true );
+$( '.vote-button[data-tache-id="' + tacheId + '"]' ).prop( 'disabled', true );
+
+
+
+}
+else if ( response.status === 'error' )
+{
+
+
+
+alert( response.message );
+
+
+
+}
+
+},
+error: function ( response )
+{
+
+
+
+console.log( 'خطأ:', response );
+alert( 'حدث خطأ أثناء تسجيل التصويت' );
+
+
+
+},
+} );
+
+
+
+} );
+
+
+
+} );
+	</script>
 {% endblock %}

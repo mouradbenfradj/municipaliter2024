@@ -17,6 +17,7 @@ use App\Entity\Article;
 use App\Entity\Commentaire;
 use App\Entity\Document;
 use App\Entity\EmployerVote;
+use App\Entity\Feedback;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Entity\Livre;
@@ -29,8 +30,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private ChartBuilderInterface $chartBuilder,
-    ) {
-    }
+    ) {}
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
@@ -73,6 +73,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Employer', 'fas fa-list', Employer::class);
         yield MenuItem::linkToCrud('EmployerVote', 'fas fa-list', EmployerVote::class);
         yield MenuItem::linkToCrud('Tache', 'fas fa-list', Tache::class);
+        yield MenuItem::linkToCrud('Feedback', 'fas fa-list', Feedback::class);
         yield MenuItem::linkToCrud('TacheVote', 'fas fa-list', TacheVote::class);
         yield MenuItem::linkToCrud('Document', 'fas fa-list', Document::class);
         yield MenuItem::linkToCrud('Article', 'fas fa-list', Article::class);
